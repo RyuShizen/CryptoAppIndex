@@ -29,7 +29,7 @@ async def coinbase(ctx):
     if rank_element:
         rank_text = rank_element.get_text(strip=True)
         rank_number = ''.join(filter(str.isdigit, rank_text))
-        message = f"The rank of the Coinbase app on the App Store is : #{rank_number} in Finance"
+        message = f"The rank of the Coinbase app on the App Store is : #{rank_number} in Finance."
     else:
         message = "Rank could not be found."
     
