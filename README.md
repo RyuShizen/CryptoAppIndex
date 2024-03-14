@@ -1,6 +1,8 @@
 # Coinbase Rank Bot
 
+<p align="center">
 <a href="https://imgbb.com/"><img src="https://i.ibb.co/cD9NhBY/coinbase-rank-logo250.png" alt="coinbase-rank-logo250" border="0"></a>
+</p>
 
 The Coinbase Rank Bot is a Discord bot designed to provide the current ranking of the Coinbase app on the App Store directly within your Discord server. By using a simple command, users can quickly get up-to-date information about Coinbase's popularity, making this bot a must-have for cryptocurrency and finance communities.
 
