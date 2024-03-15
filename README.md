@@ -16,6 +16,10 @@ The Coinbase Rank Bot is a Discord bot designed to provide the current ranking o
 - **Daily Monitoring**: Compare the current ranking with that of the day before and indicates the evolution.
 - **Market Sentiment**: Analyze the leaderboard to provide market sentiment (Euphoria, Greed, Belief, etc.).
 
+<p align="center">
+<a href="https://ibb.co/cvJkC4f"><img src="https://i.ibb.co/W3nGPm8/screen-coinbaserankbot.png" alt="screen-coinbaserankbot" border="0"></a>
+</p>
+
 ## Installation
 
 To add the Coinbase Rank Bot to your Discord server, follow these steps:
