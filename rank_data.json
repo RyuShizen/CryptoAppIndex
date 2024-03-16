@@ -1,4 +1,12 @@
 {
-    "last_rank": "",
-    "date": ""
+    "last_rank": 11,
+    "date": "",
+    "highest_rank": {
+        "rank": 8,
+        "timestamp": ""
+    },
+    "lowest_rank": {
+        "rank": 10,
+        "timestamp": ""
+    }
 }
