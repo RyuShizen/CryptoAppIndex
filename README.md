@@ -18,7 +18,7 @@ The Coinbase Rank Bot is a Discord bot designed to provide the current ranking o
 - **Rank Records**: The bot now tracks the highest and lowest ranks achieved by the Coinbase app, providing a long-term perspective on the app's performance in the App Store.
 
 <p align="center">
-<a href="https://ibb.co/71r6TRX"><img src="https://i.ibb.co/3CSL8M7/Capture.png" alt="CoinbaseRankBot-screen" border="0"></a>
+<a href="https://ibb.co/HNKD0YB"><img src="https://i.ibb.co/B4fVmjc/coinbasebot.png" alt="coinbasebot" border="0"></a>
 </p>
 
 ## Installation
