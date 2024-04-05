@@ -84,6 +84,8 @@ def get_date_from_json():
 
 def compare_ranks(current_rank):
     previous_rank, _ = get_previous_rank()
+    last_rank_date = get_date_from_json()
+
     if previous_rank is None:
         return "Rank data not available for comparison."
 
@@ -93,9 +95,9 @@ def compare_ranks(current_rank):
     if current_rank == previous_rank:
         return f"💤 (No Change)."
     elif current_rank < previous_rank:
-        return f"🔼 +{previous_rank - current_rank}."
+        return f"🔼 Increased by +{previous_rank - current_rank} position(s) since {last_rank_date}"
     else:
-        return f"🔻-{current_rank - previous_rank}."
+        return f"🔻 Decreased by -{current_rank - previous_rank} position(s) since {last_rank_date}"
     
 def evaluate_sentiment(current_rank):
         
@@ -114,7 +116,7 @@ def evaluate_sentiment(current_rank):
         else:
                 sentiment = "🔴 Capitulation."
 
-        return f"🚥 Sentiment : {sentiment}"
+        return f"**🚥 Sentiment Indicator:** {sentiment}"
 
 def number_to_emoji(number):
     
@@ -142,29 +144,32 @@ async def coinbase(ctx):
     response = requests.get(url)
     soup = BeautifulSoup(response.text, 'html.parser')
 
+    now = datetime.now()
+    current_datetime_hour = now.strftime('%Y-%m-%d %H:%M:%S')
+
     rank_element = soup.find('a', class_='inline-list__item', href=True, text=lambda t: 'in Finance' in t)
-    last_rank_date = get_date_from_json()
 
     if rank_element:
         rank_text = rank_element.get_text(strip=True)
         rank_number = ''.join(filter(str.isdigit, rank_text))
         rank_number_emoji = number_to_emoji(rank_number)
-        message_rank = f"🏆 The rank of the Coinbase app on the App Store is : #️⃣{rank_number_emoji} in Finance."
+
+        message_title = "📊 **Coinbase App Ranking** 📊\n"
+        message_rank = f"**🏆 Current Rank:** #️⃣{rank_number_emoji} in Finance on {current_datetime_hour}."
 
         sentiment_evaluation = evaluate_sentiment(rank_number)
         change_symbol = compare_ranks(rank_number)
-
                
         highest_rank, lowest_rank = get_extreme_ranks()
-        last_check = f"🔂 Change since last check ({last_rank_date}) : {change_symbol}"
-        highest_rank_msg = f"📈 Highest rank: #️⃣{number_to_emoji(highest_rank['rank'])} on {highest_rank['timestamp']}." if highest_rank else "Highest rank data not available."
-        lowest_rank_msg = f"📉 Lowest rank: #️⃣{number_to_emoji(lowest_rank['rank'])} on {lowest_rank['timestamp']}." if lowest_rank else "Lowest rank data not available."
+        recent_change = f"**🔂 Recent Positional Change:** {change_symbol}"
+        last_updated = f"📅 **Last Updated:** {current_datetime_hour}"
+        highest_rank_msg = f"📈 **Peak Rank Achieved (ATH):** #️⃣{number_to_emoji(highest_rank['rank'])} on {highest_rank['timestamp']}." if highest_rank else "Highest rank data not available."
+        lowest_rank_msg = f"📉 **Recent Lowest Rank (ATL):** #️⃣{number_to_emoji(lowest_rank['rank'])} on {lowest_rank['timestamp']}." if lowest_rank else "Lowest rank data not available."
         
         save_rank(rank_number)
 
-        await ctx.send(f"{message_rank}\n{sentiment_evaluation}\n{last_check}\n{highest_rank_msg}\n{lowest_rank_msg}")
+        await ctx.send(f"{message_title}\n{message_rank}\n{sentiment_evaluation}\n{recent_change}\n\n**Achievements & Records:**\n\n{highest_rank_msg}\n{lowest_rank_msg}\n\n{last_updated}")
     else:
         await ctx.send("Rank could not be found.")
 
 bot.run(bot_token)
-
