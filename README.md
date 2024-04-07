@@ -37,7 +37,8 @@ or
 
 After adding the Coinbase Rank Bot to your server, use the following command to get the current ranking of the Coinbase app:
 
-<code>!coinbase</code> : Get the current ranking of the Coinbase app.                                                                                                                                                                                                 <code>!cwallet</code> : Get the current ranking of the Coinbase Wallet app.
+- <code>!coinbase</code> : Get the current ranking of the Coinbase app.
+- <code>!cwallet</code> : Get the current ranking of the Coinbase Wallet app.
 
 The bot will respond with the current ranking of the app on the App Store.
 
