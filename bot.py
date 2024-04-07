@@ -19,18 +19,17 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 from datetime import datetime
 import json
 
-def save_rank(rank_number):
+def save_rank_coinbase(rank_number):
     now = datetime.now()
     current_datetime_hour = now.strftime('%Y-%m-%d %H')
     
     try:
-        with open('rank_data.json', 'r') as f:
+        with open('rank_data_coinbase.json', 'r') as f:
             data = json.load(f)
 
         last_datetime_hour = data['date'][:13]
         need_to_update = last_datetime_hour != current_datetime_hour
     except (FileNotFoundError, json.JSONDecodeError):
-
         need_to_update = True
         data = {
             'last_rank': None, 
@@ -50,10 +49,41 @@ def save_rank(rank_number):
         data['last_rank'] = rank_number
         data['date'] = now.strftime('%Y-%m-%d %H:%M:%S')
 
-        with open('rank_data.json', 'w') as f:
+        with open('rank_data_coinbase.json', 'w') as f:
             json.dump(data, f, indent=4)
 
+def save_rank_wallet(rank_number):
+    now = datetime.now()
+    current_datetime_hour = now.strftime('%Y-%m-%d %H')
+    
+    try:
+        with open('rank_data_wallet.json', 'r') as f:
+            data = json.load(f)
 
+        last_datetime_hour = data['date'][:13]
+        need_to_update = last_datetime_hour != current_datetime_hour
+    except (FileNotFoundError, json.JSONDecodeError):
+        need_to_update = True
+        data = {
+            'last_rank': None, 
+            'date': now.strftime('%Y-%m-%d %H:%M:%S'),
+            'highest_rank': {'rank': None, 'timestamp': ''},
+            'lowest_rank': {'rank': None, 'timestamp': ''}
+        }
+
+    if need_to_update:
+        rank_number = int(rank_number)
+
+        if data['highest_rank']['rank'] is None or rank_number < data['highest_rank']['rank']:
+            data['highest_rank'] = {'rank': rank_number, 'timestamp': now.strftime('%Y-%m-%d %H:%M:%S')}
+        if data['lowest_rank']['rank'] is None or rank_number > data['lowest_rank']['rank']:
+            data['lowest_rank'] = {'rank': rank_number, 'timestamp': now.strftime('%Y-%m-%d %H:%M:%S')}
+
+        data['last_rank'] = rank_number
+        data['date'] = now.strftime('%Y-%m-%d %H:%M:%S')
+
+        with open('rank_data_wallet.json', 'w') as f:
+            json.dump(data, f, indent=4)
 def get_extreme_ranks():
     try:
         with open('rank_data.json', 'r') as f:
