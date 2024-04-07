@@ -84,15 +84,27 @@ def save_rank_wallet(rank_number):
 
         with open('rank_data_wallet.json', 'w') as f:
             json.dump(data, f, indent=4)
-def get_extreme_ranks():
+            
+def get_extreme_ranks_coinbase():
     try:
-        with open('rank_data.json', 'r') as f:
+        with open('rank_data_coinbase.json', 'r') as f:
             data = json.load(f)
-        highest_rank = data.get('highest_rank', {})
-        lowest_rank = data.get('lowest_rank', {})
-        return highest_rank, lowest_rank
+        highest_rank_coinbase = data.get('highest_rank', {})
+        lowest_rank_coinbase = data.get('lowest_rank', {})
+        return highest_rank_coinbase, lowest_rank_coinbase
     except (FileNotFoundError, json.JSONDecodeError):
         return None, None
+
+def get_extreme_ranks_wallet():
+    try:
+        with open('rank_data_wallet.json', 'r') as f:
+            data = json.load(f)
+        highest_rank_wallet = data.get('highest_rank', {})
+        lowest_rank_wallet = data.get('lowest_rank', {})
+        return highest_rank_wallet, lowest_rank_wallet
+    except (FileNotFoundError, json.JSONDecodeError):
+        return None, None
+
 
 def get_previous_rank():
     try:
