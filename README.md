@@ -8,14 +8,11 @@ The Coinbase Rank Bot is a Discord bot designed to provide the current ranking o
 
 ## Features
 
-- **Fetch Ranking**: Sends the current ranking of the Coinbase app on the App Store with a simple command.
-- **Easy to Use**: Designed to be straightforward, with a quick command for all users.
+- **Fetch Ranking**: Sends the current ranking of both the Coinbase apps and Coinbase Wallet on the App Store with simple commands.
 - **Automatic Updates**: The bot fetches the most recent data with each command, ensuring the information is always up to date.
-- **Ranking Retrieval**: Shows the current ranking of the Coinbase app on the App Store.
-- **Display in Emoji**: Shows the ranking in the form of emojis for better visibility.
 - **Daily Monitoring**: Compare the current ranking with that of the day before and indicates the evolution.
-- **Market Sentiment**: Analyze the leaderboard to provide market sentiment (Euphoria, Greed, Belief, etc.).
-- **Rank Records**: The bot now tracks the highest and lowest ranks achieved by the Coinbase app, providing a long-term perspective on the app's performance in the App Store.
+- **Market Sentiment**: Analyze the leaderboard to provide market sentiment using a weighted average of both apps' rankings. (Extreme Greed, Greed, Belief, etc.).
+- **Rank Records**: The bot now tracks the highest and lowest ranks achieved by both the Coinbase and Wallet apps, providing a long-term perspective on their performance in the App Store.
 
 <p align="center">
 <a href="https://ibb.co/HNKD0YB"><img src="https://i.ibb.co/B4fVmjc/coinbasebot.png" alt="coinbasebot" border="0"></a>
@@ -40,8 +37,8 @@ or
 
 After adding the Coinbase Rank Bot to your server, use the following command to get the current ranking of the Coinbase app:
 
-<code>!coinbase</code>
-
+<code>!coinbase</code> : Get the current ranking of the Coinbase app.
+<code>!cwallet</code> : Get the current ranking of the Coinbase Wallet app.
 
 The bot will respond with the current ranking of the app on the App Store.
 
