@@ -1,10 +1,10 @@
-# Coinbase Rank Bot
+# CryptoAppIndex Bot
 
 <p align="center">
 <a href="https://imgbb.com/"><img src="https://i.ibb.co/cD9NhBY/coinbase-rank-logo250.png" alt="coinbase-rank-logo250" border="0"></a>
 </p>
 
-The Coinbase Rank Bot is a Discord bot designed to provide the current ranking of the Coinbase app on the App Store directly within your Discord server. By using a simple command, users can quickly get up-to-date information about Coinbase's popularity, making this bot a must-have for cryptocurrency and finance communities.
+The CryptoAppIndex Bot is a Discord bot designed to provide the current ranking of the Coinbase app and his wallet (more apps to come) on the App Store directly within your Discord server. By using a simple command, users can quickly get up-to-date information about Coinbase's popularity, making this bot a must-have for cryptocurrency and finance communities.
 
 ## Features
 
@@ -15,7 +15,7 @@ The Coinbase Rank Bot is a Discord bot designed to provide the current ranking o
 - **Rank Records**: The bot now tracks the highest and lowest ranks achieved by both the Coinbase and Wallet apps, providing a long-term perspective on their performance in the App Store.
 
 <p align="center">
-<a href="https://ibb.co/HNKD0YB"><img src="https://i.ibb.co/B4fVmjc/coinbasebot.png" alt="coinbasebot" border="0"></a>
+<a href="https://ibb.co/DgV02B4"><img src="https://i.ibb.co/qFyTQHB/Capture.png" alt="Capture" border="0"></a>
 </p>
 
 ## Installation
