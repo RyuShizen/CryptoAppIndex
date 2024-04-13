@@ -15,7 +15,7 @@ The CryptoAppIndex Bot is a Discord bot designed to provide the current ranking 
 - **Rank Records**: The bot now tracks the highest and lowest ranks achieved by both the Coinbase and Wallet apps, providing a long-term perspective on their performance in the App Store.
 
 <p align="center">
-<a href="https://ibb.co/DgV02B4"><img src="https://i.ibb.co/qFyTQHB/Capture.png" alt="Capture" border="0"></a>
+<a href="https://imgbb.com/"><img src="https://i.ibb.co/wKfhVxR/Capture.png" alt="Capture" border="0"></a>
 </p>
 
 ## Installation
