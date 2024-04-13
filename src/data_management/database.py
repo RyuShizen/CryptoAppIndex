@@ -8,35 +8,37 @@ class AppRankTracker:
 
     def save_rank(self, rank_number):
         now = datetime.now()
-        current_datetime_hour = now.strftime('%Y-%m-%d %H')
+        current_datetime = now.strftime('%Y-%m-%d %H:%M:%S')
         
         try:
             with open(self.file_path, 'r') as f:
                 data = json.load(f)
-            last_datetime_hour = data['date'][:13]
-            need_to_update = last_datetime_hour != current_datetime_hour
+            last_saved_rank = data.get('last_rank')
         except (FileNotFoundError, json.JSONDecodeError):
-            need_to_update = True
             data = {
                 'last_rank': None, 
-                'date': now.strftime('%Y-%m-%d %H:%M:%S'),
+                'date': '',
                 'highest_rank': {'rank': None, 'timestamp': ''},
                 'lowest_rank': {'rank': None, 'timestamp': ''}
             }
+            last_saved_rank = None
 
-        if need_to_update:
+        # Update if the current rank is different from the last saved rank
+        if last_saved_rank != rank_number:
             rank_number = int(rank_number)
+            data['last_rank'] = rank_number
+            data['date'] = current_datetime
 
             if data['highest_rank']['rank'] is None or rank_number < data['highest_rank']['rank']:
-                data['highest_rank'] = {'rank': rank_number, 'timestamp': now.strftime('%Y-%m-%d %H:%M:%S')}
+                data['highest_rank'] = {'rank': rank_number, 'timestamp': current_datetime}
             if data['lowest_rank']['rank'] is None or rank_number > data['lowest_rank']['rank']:
-                data['lowest_rank'] = {'rank': rank_number, 'timestamp': now.strftime('%Y-%m-%d %H:%M:%S')}
-
-            data['last_rank'] = rank_number
-            data['date'] = now.strftime('%Y-%m-%d %H:%M:%S')
+                data['lowest_rank'] = {'rank': rank_number, 'timestamp': current_datetime}
 
             with open(self.file_path, 'w') as f:
                 json.dump(data, f, indent=4)
+            print("Rank data updated.")
+        else:
+            print("No need to update rank data; rank unchanged.")
 
     def get_extreme_ranks(self):
         try:
@@ -69,7 +71,9 @@ class AppRankTracker:
             return None, None
 
     def compare_ranks(self, current_rank):
+        
         previous_rank, last_date = self.get_previous_rank()
+        
         if previous_rank is None:
             return "Rank data not available for comparison."
 
@@ -80,8 +84,8 @@ class AppRankTracker:
             return "Error processing rank values."
 
         if current_rank == previous_rank:
-            return f"💤 (No Change)."
+            return f"``💤 No Change.``"
         elif current_rank < previous_rank:
-            return f"🔼 Increased by +{previous_rank - current_rank} position(s) since {last_date}"
+            return f"``🔼 Increased by +{previous_rank - current_rank} position(s) since {last_date}``"
         else:
-            return f"🔻 Decreased by -{current_rank - previous_rank} position(s) since {last_date}"
+            return f"``🔻 Decreased by -{current_rank - previous_rank} position(s) since {last_date}``"
