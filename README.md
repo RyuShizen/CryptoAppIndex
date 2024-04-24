@@ -15,7 +15,7 @@ CryptoAppIndex is a Discord bot designed to provide the current ranking of crypt
 - **Rank Records**: The bot now tracks the highest and lowest ranks achieved by crypto apps, providing a long-term perspective on their performance in the App Store.
 
 <p align="center">
-<a href="https://imgbb.com/"><img src="https://i.ibb.co/ngMrwKp/Capture.png" alt="Capture" border="0"></a>
+<a href="https://imgbb.com/"><img src="https://i.ibb.co/Dth3bGh/bot-screen.png" alt="bot-screen" border="0"></a>
 </p>
 
 ## Installation
