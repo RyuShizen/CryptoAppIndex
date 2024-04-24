@@ -56,6 +56,6 @@ For any questions or suggestions, feel free to open an issue in the project's Gi
 
 ## License
 
-CryptoAppIndex is distributed under the MIT License. For more information, see the `LICENSE` file in the project repository.
+CryptoAppIndex is distributed under the GNU General Public License v3.0. For more information, see the `LICENSE` file in the project repository.
 
 
