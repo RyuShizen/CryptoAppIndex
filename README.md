@@ -4,15 +4,15 @@
 <a href="https://imgbb.com/"><img src="https://i.ibb.co/4sLW3yM/Crypto-App-Index-Logo2.png" alt="Crypto-App-Index-Logo2" border="0"></a>
 </p>
 
-CryptoAppIndex is a Discord bot designed to provide the current ranking of the Coinbase app wallet (more apps to come) on the App Store directly within your Discord server. By using a simple command, users can quickly get up-to-date information about Coinbase's popularity, making this bot a must-have for cryptocurrency and finance communities.
+CryptoAppIndex is a Discord bot designed to provide the current ranking of crypto apps on the App Store directly within your Discord server. By using a simple command, users can quickly get up-to-date information about Crypto's apps popularity, making this bot a must-have for cryptocurrency and finance communities.
 
 ## Features
 
-- **Fetch Ranking**: Sends the current ranking of both the Coinbase apps and Coinbase Wallet on the App Store with simple commands.
+- **Fetch Ranking**: Sends the current ranking of most popular crypto apps (Coinbase, Binance, Crypto.com) on the App Store with simple commands.
 - **Automatic Updates**: The bot fetches the most recent data with each command, ensuring the information is always up to date.
 - **Daily Monitoring**: Compare the current ranking with that of the day before and indicates the evolution.
-- **Market Sentiment**: Analyze the leaderboard to provide market sentiment using a weighted average of both apps' rankings. (Extreme Greed, Greed, Belief, etc.).
-- **Rank Records**: The bot now tracks the highest and lowest ranks achieved by both the Coinbase and Wallet apps, providing a long-term perspective on their performance in the App Store.
+- **Market Sentiment**: Analyze the leaderboard to provide market sentiment using a weighted average of crypto apps' rankings. (Extreme Greed, Greed, Optimism, Doubt, etc.).
+- **Rank Records**: The bot now tracks the highest and lowest ranks achieved by crypto apps, providing a long-term perspective on their performance in the App Store.
 
 <p align="center">
 <a href="https://imgbb.com/"><img src="https://i.ibb.co/ngMrwKp/Capture.png" alt="Capture" border="0"></a>
@@ -20,7 +20,7 @@ CryptoAppIndex is a Discord bot designed to provide the current ranking of the C
 
 ## Installation
 
-To add the Coinbase Rank Bot to your Discord server, follow these steps:
+To add the CryptoAppIndex to your Discord server, follow these steps:
 
 1. **Create a Discord Application**: Go to the [Discord developer portal](https://discord.com/developers/applications) and create a new application.
 2. **Add a Bot to Your Application**: In the "Bot" tab, click "Add Bot".
@@ -35,16 +35,18 @@ or
 
 ## Usage
 
-After adding the Coinbase Rank Bot to your server, use the following command to get the current ranking of the Coinbase app:
+After adding CryptoAppIndex to your server, use the following command to get the current ranking of crypto app:
 
 - <code>!coinbase</code> : Get the current ranking of the Coinbase app.
-- <code>!cwallet</code> : Get the current ranking of the Coinbase Wallet app.
+- <code>!cwallet</code> : Get the current ranking of the Coinbase's Wallet app.
+- <code>!binance</code> : Get the current ranking of the Binance app.
+- <code>!cryptocom</code> : Get the current ranking of the Crypto.com app.
 
 The bot will respond with the current ranking of the app on the App Store.
 
 ## Contribution
 
-If you wish to contribute to the development of the Coinbase Rank Bot, please follow these steps:
+If you wish to contribute to the development of  CryptoAppIndex, please follow these steps:
 
 1. **Fork the Repository**: Create a fork of the project on GitHub.
 2. **Clone Your Fork**: Work on your local machine to make changes.
@@ -54,6 +56,6 @@ For any questions or suggestions, feel free to open an issue in the project's Gi
 
 ## License
 
-The Coinbase Rank Bot is distributed under the MIT License. For more information, see the `LICENSE` file in the project repository.
+CryptoAppIndex is distributed under the MIT License. For more information, see the `LICENSE` file in the project repository.
 
 
