@@ -1,4 +1,4 @@
-# CryptoAppIndex Bot
+# CryptoAppIndex
 
 <p align="center">
 <a href="https://imgbb.com/"><img src="https://i.ibb.co/4sLW3yM/Crypto-App-Index-Logo2.png" alt="Crypto-App-Index-Logo2" border="0"></a>
