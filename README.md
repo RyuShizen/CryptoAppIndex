@@ -50,6 +50,6 @@ CryptoAppIndex is distributed under the GNU General Public License v3.0. For mor
 
 ## Legal Information
 
-This Discord bot is designed solely to retrieve and display the ranking information of specific applications such as Coinbase, Binance, Crypto.com, and Coinbase Wallet from publicly accessible sources. The data provided by this bot is for informational purposes only and should not be interpreted as an endorsement or reflection of the views of the applications concerned or any affiliated platforms, including the App Store. 
+CryptoAppIndex is designed solely to retrieve and display the ranking information of specific applications such as Coinbase, Binance, Crypto.com, and Coinbase Wallet from publicly accessible sources. The data provided by this bot is for informational purposes only and should not be interpreted as an endorsement or reflection of the views of the applications concerned or any affiliated platforms, including the App Store. 
 
 Users are advised that all interpretations and actions based on the bot's data are at their own discretion and risk. Importantly, this bot does not provide investment advice, nor should its output be used as a basis for making investment decisions.
