@@ -21,3 +21,23 @@ def current_rank_wallet():
         rank_text = rank_element.get_text(strip=True)
         return ''.join(filter(str.isdigit, rank_text))
     return None
+
+def current_rank_binance():
+    url = "https://apps.apple.com/us/app/binance-us-buy-bitcoin-eth/id1492670702"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    rank_element = soup.find('a', class_='inline-list__item', href=True, text=lambda t: 'in Finance' in t)
+    if rank_element:
+        rank_text = rank_element.get_text(strip=True)
+        return ''.join(filter(str.isdigit, rank_text))
+    return None
+
+def current_rank_cryptodotcom():
+    url = "https://apps.apple.com/us/app/crypto-com-buy-bitcoin-sol/id1262148500"
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    rank_element = soup.find('a', class_='inline-list__item', href=True, text=lambda t: 'in Finance' in t)
+    if rank_element:
+        rank_text = rank_element.get_text(strip=True)
+        return ''.join(filter(str.isdigit, rank_text))
+    return None
