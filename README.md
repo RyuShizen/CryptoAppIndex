@@ -20,14 +20,6 @@ CryptoAppIndex is a Discord bot designed to provide the current ranking of crypt
 
 ## Installation
 
-To add the CryptoAppIndex to your Discord server, follow these steps:
-
-1. **Create a Discord Application**: Go to the [Discord developer portal](https://discord.com/developers/applications) and create a new application.
-2. **Add a Bot to Your Application**: In the "Bot" tab, click "Add Bot".
-3. **Invite the Bot to Your Server**: Use the generated invitation URL in the "OAuth2" tab to invite your bot to the server.
-
-or
-
 1. Clone this repository to your server.
 2. Install the dependencies by running `pip install -r requirements.txt`.
 3. Create a `.env` file in the project root and add your `BOT_TOKEN`.
