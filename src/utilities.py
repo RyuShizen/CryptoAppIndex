@@ -1,3 +1,5 @@
+from api.apps import current_rank_binance, current_rank_coinbase, current_rank_cryptodotcom, current_rank_wallet
+
 def number_to_emoji(number):
     digit_to_emoji = {
         '0': '0️⃣', '1': '1️⃣', '2': '2️⃣', '3': '3️⃣', '4': '4️⃣',
@@ -29,35 +31,37 @@ def evaluate_sentiment(coinbase_tracker, wallet_tracker, binance_tracker, crypto
         cryptodotcom_current_rank = int(cryptodotcom_current_rank)
         # Calculate weighted average
         weighted_average_rank = (5 * (coinbase_current_rank + cryptodotcom_current_rank) + 2.5 * binance_current_rank + wallet_current_rank) / 13.5
+        
+        print(f"Debug: Weighted Average Rank Result: {100 - round(weighted_average_rank)}.")
 
         # Evaluate sentiment based on the weighted average
         if weighted_average_rank <= 10:
-            sentiment = "Extreme Greed"
+            sentiment = "🟢🟢🟢 Extreme Greed!"
         elif weighted_average_rank <= 20:
-            sentiment = "Greed"
+            sentiment = "🟢🟢 Greed!"
         elif weighted_average_rank <= 25:
-            sentiment = "Optimism"
+            sentiment = "🟢 Optimism"
         elif weighted_average_rank <= 30:
-            sentiment = "Doubt"
+            sentiment = "🟡 Doubt"
         elif weighted_average_rank <= 35:
-            sentiment = "Anxiety"
+            sentiment = "🟠 Anxiety"
         elif weighted_average_rank <= 50:
-            sentiment = "Fear"
+            sentiment = "🔴🔴 Fear!"
         else:
-            sentiment = "Capitulation"
+            sentiment = "🔴🔴🔴 Capitulation!"
 
-        # Add a match sentiment-image
+        # Ajoutez une correspondance sentiment-image
         sentiment_images = {
-            "Extreme Greed": "extreme_greed.png",
-            "Greed": "greed.png",
-            "Optimism": "optimism.png",
-            "Doubt": "doubt.png",
-            "Anxiety": "anxiety.png",
-            "Fear": "fear.png",
-            "Capitulation": "capitulation.png"
+            "🟢🟢🟢 Extreme Greed!": "extreme_greed.png",
+            "🟢🟢 Greed!": "greed.png",
+            "🟢 Optimism": "optimism.png",
+            "🟡 Doubt": "doubt.png",
+            "🟠 Anxiety": "anxiety.png",
+            "🔴🔴 Fear!": "fear.png",
+            "🔴🔴🔴 Capitulation!": "capitulation.png"
         }
 
-        # Choose images based on current sentiment
+        # Choisissez l'image basée sur le sentiment calculé
         image_file = sentiment_images.get(sentiment)
 
         return sentiment, image_file
