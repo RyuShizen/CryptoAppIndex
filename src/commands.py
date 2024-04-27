@@ -6,7 +6,7 @@ from datetime import datetime
 
 # Import your necessary modules here
 from api.apps import current_rank_coinbase, current_rank_wallet, current_rank_binance, current_rank_cryptodotcom
-from utilities import number_to_emoji, evaluate_sentiment
+from utilities import number_to_emoji, evaluate_sentiment, weighted_average_sentiment_calculation
 from data_management.database import AppRankTracker
 
 # Create tracker instances
@@ -20,6 +20,37 @@ intents = discord.Intents.default()
 intents.messages = True
 intents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=intents)
+
+# Initialize sentiment calculation
+average_sentiment_calculation = weighted_average_sentiment_calculation()
+
+async def send_error_message_set_alert(ctx, additional_info=""):
+    embed = discord.Embed(
+        title="❌ Missing argument",
+        description="One or more arguments are missing.",
+        color=discord.Color.red()
+    )
+    embed.add_field(name="Format Correct", value="``!alert`` ``<app-name>`` ``<operator>`` ``<rank>``")
+    if additional_info:
+        embed.add_field(name="Error", value=additional_info)
+    embed.add_field(name="Example", value="``!alert coinbase > 10``")
+    avatar_url = ctx.author.avatar.url if ctx.author.avatar else None
+    embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=avatar_url if avatar_url else discord.Embed.Empty)
+    await ctx.send(embed=embed)
+
+async def send_error_message_remove_alert(ctx, additional_info=""):
+    embed = discord.Embed(
+        title="❌ Missing argument",
+        description="One or more arguments are missing.",
+        color=discord.Color.red()
+    )
+    embed.add_field(name="Format Correct", value="``!remove_alert`` ``<app-name>``")
+    if additional_info:
+        embed.add_field(name="Error", value=additional_info)
+    embed.add_field(name="Example", value="``!remove_alert coinbase``")
+    avatar_url = ctx.author.avatar.url if ctx.author.avatar else None
+    embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=avatar_url if avatar_url else discord.Embed.Empty)
+    await ctx.send(embed=embed)
 
 @bot.command()
 async def coinbase(ctx):
@@ -47,7 +78,7 @@ async def coinbase(ctx):
         embed.add_field(name="📉 Recent Lowest Rank (ATL)", value=f"``#️⃣{number_to_emoji(lowest_rank['rank'])} on {lowest_rank['timestamp']}``", inline=True)
 
     # Market Sentiment field and image below it
-    embed.add_field(name="🚥 Market Sentiment", value=f"``{sentiment_text}``", inline=False)
+    embed.add_field(name="🚥 Market Sentiment", value=f"Score: ``{average_sentiment_calculation}``\nFeeling: ``{sentiment_text}``\n", inline=False)
 
     # Attach the sentiment image
     file_sentiment = discord.File(f"assets/{sentiment_image_filename}", filename=sentiment_image_filename)
@@ -56,6 +87,8 @@ async def coinbase(ctx):
     # Footer and sending the message
     avatar_url = ctx.author.avatar.url if ctx.author.avatar else None
     embed.set_footer(text=f"Requested by {ctx.author.display_name}, {current_datetime_hour}.", icon_url=avatar_url if avatar_url else discord.Embed.Empty)
+
+    coinbase_tracker.save_rank(rank_number_coinbase)
 
     await ctx.send(files=[file_thumb, file_sentiment], embed=embed)
 
@@ -85,7 +118,7 @@ async def cwallet(ctx):
         embed.add_field(name="📉 Recent Lowest Rank (ATL)", value=f"``#️⃣{number_to_emoji(lowest_rank['rank'])} on {lowest_rank['timestamp']}``", inline=True)
 
     # Market Sentiment field and image below it
-    embed.add_field(name="🚥 Market Sentiment", value=f"``{sentiment_text}``", inline=False)
+    embed.add_field(name="🚥 Market Sentiment", value=f"Score: ``{average_sentiment_calculation}``\nFeeling: ``{sentiment_text}``\n", inline=False)
 
     # Attach the sentiment image
     file_sentiment = discord.File(f"assets/{sentiment_image_filename}", filename=sentiment_image_filename)
@@ -94,6 +127,8 @@ async def cwallet(ctx):
     # Footer and sending the message
     avatar_url = ctx.author.avatar.url if ctx.author.avatar else None
     embed.set_footer(text=f"Requested by {ctx.author.display_name}, {current_datetime_hour}.", icon_url=avatar_url if avatar_url else discord.Embed.Empty)
+
+    wallet_tracker.save_rank(rank_number_wallet)
 
     await ctx.send(files=[file_thumb, file_sentiment], embed=embed)
 
@@ -123,7 +158,7 @@ async def binance(ctx):
         embed.add_field(name="📉 Recent Lowest Rank (ATL)", value=f"``#️⃣{number_to_emoji(lowest_rank['rank'])} on {lowest_rank['timestamp']}``", inline=True)
 
     # Market Sentiment field and image below it
-    embed.add_field(name="🚥 Market Sentiment", value=f"``{sentiment_text}``", inline=False)
+    embed.add_field(name="🚥 Market Sentiment", value=f"Score: ``{average_sentiment_calculation}``\nFeeling: ``{sentiment_text}``\n", inline=False)
 
     # Attach the sentiment image
     file_sentiment = discord.File(f"assets/{sentiment_image_filename}", filename=sentiment_image_filename)
@@ -132,6 +167,8 @@ async def binance(ctx):
     # Footer and sending the message
     avatar_url = ctx.author.avatar.url if ctx.author.avatar else None
     embed.set_footer(text=f"Requested by {ctx.author.display_name}, {current_datetime_hour}.", icon_url=avatar_url if avatar_url else discord.Embed.Empty)
+
+    binance_tracker.save_rank(rank_number_binance)
 
     await ctx.send(files=[file_thumb, file_sentiment], embed=embed)
 
@@ -161,7 +198,7 @@ async def cryptocom(ctx):
         embed.add_field(name="📉 Recent Lowest Rank (ATL)", value=f"``#️⃣{number_to_emoji(lowest_rank['rank'])} on {lowest_rank['timestamp']}``", inline=True)
 
     # Market Sentiment field and image below it
-    embed.add_field(name="🚥 Market Sentiment", value=f"``{sentiment_text}``", inline=False)
+    embed.add_field(name="🚥 Market Sentiment", value=f"Score: ``{average_sentiment_calculation}``\nFeeling: ``{sentiment_text}``\n", inline=False)
 
     # Attach the sentiment image
     file_sentiment = discord.File(f"assets/{sentiment_image_filename}", filename=sentiment_image_filename)
@@ -171,10 +208,172 @@ async def cryptocom(ctx):
     avatar_url = ctx.author.avatar.url if ctx.author.avatar else None
     embed.set_footer(text=f"Requested by {ctx.author.display_name}, {current_datetime_hour}.", icon_url=avatar_url if avatar_url else discord.Embed.Empty)
 
+    cryptodotcom_tracker.save_rank(rank_number_cryptodotcom)
+
     await ctx.send(files=[file_thumb, file_sentiment], embed=embed)
+
+@bot.command()
+async def alert(ctx, app_name: str = None, operator: str = None, rank: int = None):
+    # Verify if all args are valid
+    if app_name is None or operator is None or rank is None:
+        await send_error_message_set_alert(ctx)
+        return
+    
+    if operator not in ['>', '<', '>=', '<=']:
+        await ctx.send("Invalid operator. Please use one of the following: '>', '<', '>=', '<='.")
+        return
+    
+    alert_data = {
+        'user_id': ctx.author.id,
+        'app_name': app_name.lower(),
+        'operator': operator,
+        'rank': rank
+    }
+
+    os.makedirs('data', exist_ok=True)
+
+    try:
+        alerts = []
+        # Check if file exists and read existing data
+        if os.path.exists('data/alerts.json'):
+            with open('data/alerts.json', 'r') as f:
+                alerts = json.load(f)
+        
+        # Check for duplicate alerts
+        for existing_alert in alerts:
+            if (existing_alert['user_id'] == ctx.author.id and
+                existing_alert['app_name'] == app_name.lower() and
+                existing_alert['operator'] == operator and
+                existing_alert['rank'] == rank):
+                embed = discord.Embed(description=f"❌ Alert for ``{app_name}`` when rank ``{operator} {rank}`` already exists.", color=0xff0000)
+                avatar_url = ctx.author.avatar.url if ctx.author.avatar else None
+                embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=avatar_url if avatar_url else discord.Embed.Empty)
+                await ctx.send(embed=embed)
+                return
+        
+        # Add the new alert if no duplicates
+        alerts.append(alert_data)
+        with open('data/alerts.json', 'w') as f:
+            json.dump(alerts, f, indent=4)
+
+        embed = discord.Embed(description=f"✅🔔 Alert set for {app_name} when rank ``{operator} {rank}``.", color=0x00ff00)
+        avatar_url = ctx.author.avatar.url if ctx.author.avatar else None
+        embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=avatar_url if avatar_url else discord.Embed.Empty)
+        await ctx.send(embed=embed)
+
+    except Exception as e:
+        print(f"Failed to set or check alerts due to an error: {e}")
+        await ctx.send("🚨 Failed to set alert due to an internal error.")
+
+@bot.command(name='rmalert')
+async def rmalert(ctx, app_name: str = None):
+    if app_name is None:
+        embed = discord.Embed(description="❌ Please specify an app name to remove its alert.", color=discord.Color.red())
+        embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=ctx.author.avatar.url if ctx.author.avatar else discord.Embed.Empty)
+        await ctx.send(embed=embed)
+        return
+
+    user_id = ctx.author.id
+    alert_file_path = 'data/alerts.json'  # Ensure this path is correct in your file structure
+
+    try:
+        with open(alert_file_path, 'r+') as file:
+            alerts = json.load(file)
+            new_alerts = [alert for alert in alerts if not (alert['user_id'] == user_id and alert['app_name'].lower() == app_name.lower())]
+
+            if len(alerts) == len(new_alerts):
+                embed = discord.Embed(description=f"🙅‍♂️ No alert found for ``{app_name.capitalize()}`` that belongs to you.", color=discord.Color.red())
+            else:
+                file.seek(0)
+                json.dump(new_alerts, file, indent=4)
+                file.truncate()
+                embed = discord.Embed(description=f"🚮 Alert for ``{app_name.capitalize()}`` has been successfully removed.", color=discord.Color.green())
+
+            embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=ctx.author.avatar.url if ctx.author.avatar else discord.Embed.Empty)
+            await ctx.send(embed=embed)
+
+    except FileNotFoundError:
+        embed = discord.Embed(description="🚨 Alert data file not found.", color=discord.Color.red())
+        embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=ctx.author.avatar.url if ctx.author.avatar else discord.Embed.Empty)
+        await ctx.send(embed=embed)
+    except json.JSONDecodeError:
+        embed = discord.Embed(description="🚨 Error reading the alert data.", color=discord.Color.red())
+        embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=ctx.author.avatar.url if ctx.author.avatar else discord.Embed.Empty)
+        await ctx.send(embed=embed)
+    except Exception as e:
+        embed = discord.Embed(description="🚨 Failed to remove the alert due to an error.", color=discord.Color.red())
+        embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=ctx.author.avatar.url if ctx.author.avatar else discord.Embed.Empty)
+        await ctx.send(embed=embed)
+        print(f"Error when trying to remove alert: {e}")
+
+@bot.command(name='myalerts')
+async def myalerts(ctx):
+    user_id = ctx.author.id
+    alert_file_path = 'data/alerts.json'  # Adjust path as necessary
+
+    try:
+        with open(alert_file_path, 'r') as file:
+            alerts = json.load(file)
+            user_alerts = [alert for alert in alerts if alert['user_id'] == user_id]
+
+        if not user_alerts:
+            embed = discord.Embed(description="🤷‍♂️ You have no active alerts.", color=discord.Color.blue())
+        else:
+            embed = discord.Embed(title="🔂🔔 Your Active Alerts", description="", color=discord.Color.green())
+            for alert in user_alerts:
+                embed.add_field(name=f"``✅ {alert['app_name'].title()} Alert``",
+                                value=f"``Trigger: {alert['operator']} {alert['rank']}``",
+                                inline=False)
+
+        embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=ctx.author.avatar.url if ctx.author.avatar else discord.Embed.Empty)
+        await ctx.send(embed=embed)
+
+    except FileNotFoundError:
+        embed = discord.Embed(description="🚨 Alert data file not found.", color=discord.Color.red())
+        embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=ctx.author.avatar.url if ctx.author.avatar else discord.Embed.Empty)
+        await ctx.send(embed=embed)
+    except json.JSONDecodeError:
+        embed = discord.Embed(description="🚨 Error reading the alert data.", color=discord.Color.red())
+        embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=ctx.author.avatar.url if ctx.author.avatar else discord.Embed.Empty)
+        await ctx.send(embed=embed)
+    except Exception as e:
+        embed = discord.Embed(description="🚨 An error occurred while retrieving your alerts.", color=discord.Color.red())
+        embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=ctx.author.avatar.url if ctx.author.avatar else discord.Embed.Empty)
+        await ctx.send(embed=embed)
+        print(f"Error retrieving alerts: {e}")
+
+@bot.command(name='rmall')
+async def rmall(ctx):
+    user_id = ctx.author.id
+    try:
+        # Load the current alerts from the file
+        if os.path.exists('data/alerts.json'):
+            with open('data/alerts.json', 'r') as file:
+                alerts = json.load(file)
+            
+            # Filter out alerts for the user
+            alerts = [alert for alert in alerts if alert['user_id'] != user_id]
+
+            # Write the updated alerts back to the file
+            with open('data/alerts.json', 'w') as file:
+                json.dump(alerts, file, indent=4)
+            
+            embed = discord.Embed(title="🚮✅ Alerts Removed", description="All your alerts have been successfully removed.", color=0x00ff00)
+            embed.set_footer(text=f"Requested by {ctx.author.display_name}", icon_url=ctx.author.avatar.url if ctx.author.avatar else None)
+            await ctx.send(embed=embed)
+        else:
+            await ctx.send("🤷‍♂️ No alert file found or no alerts set.")
+
+    except Exception as e:
+        await ctx.send("🚨 Failed to remove alerts due to an error.")
+        print(f"Error when trying to remove all alerts: {e}")
 
 def setup_commands(bot):
     bot.add_command(coinbase)
     bot.add_command(binance)
     bot.add_command(cryptocom)
     bot.add_command(cwallet)
+    bot.add_command(alert)
+    bot.add_command(rmalert)
+    bot.add_command(myalerts)
+    bot.add_command(rmall)
