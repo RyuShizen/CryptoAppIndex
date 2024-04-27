@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime, timezone
 import asyncio
-from discord.ext import commands
+from discord.ext import commands, tasks
 from utilities import evaluate_sentiment, weighted_average_sentiment_calculation
 from data_management.database import AppRankTracker
 import discord
@@ -63,7 +63,7 @@ class RankTracker:
         except Exception as e:
             print(f"Error while saving rank data: {e}")
 
-    def track_rank(self):
+    async def track_rank(self):
         coinbase_rank = self.fetch_coinbase_rank()
         if coinbase_rank is not None:
             print(f"Fetched Coinbase rank: {coinbase_rank}")
@@ -162,6 +162,31 @@ class RankTracker:
         except discord.HTTPException as e:
             print(f"Failed to send message to {user_id}: {e}")
 
+    async def update_bot_status(self):
+        app_urls = [
+            ("coinbase", self.url_coinbase),
+            ("coinbase wallet", self.url_coinbase_wallet),
+            ("binance", self.url_binance),
+            ("crypto.com", self.url_cryptodotcom)
+        ]
+        status_index = 0
+        while True:  # This loop will continuously update the status
+            app_name, url = app_urls[status_index]
+            rank = self.fetch_rank(url)
+            if rank is not None:
+                status_message = f"{app_name.capitalize()}: Rank #{rank}"
+                await self.bot.change_presence(activity=discord.Game(name=status_message))
+                print(f"Status updated: {status_message}")
+            else:
+                print(f"Failed to fetch rank for {app_name}")
+
+            # Wait for some time before changing the status
+            await asyncio.sleep(10)  # Change status every 10 seconds
+
+            # Move to the next app status or loop back to the start
+            status_index = (status_index + 1) % len(app_urls)
+
+
     def setup_schedule(self):
         schedule.every().hour.do(self.track_rank)
         schedule.every().hour.do(self.check_alerts)
@@ -170,6 +195,7 @@ class RankTracker:
         while True:
             self.track_rank()
             await self.check_alerts()
+            await self.update_bot_status()
             await asyncio.sleep(60)  # wait for x seconds
             
 if __name__ == "__main__":
