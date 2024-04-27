@@ -15,7 +15,9 @@ CryptoAppIndex is a Discord bot designed to provide the current ranking of crypt
 - **Automatic Updates**: The bot fetches the most recent data with each command, ensuring the information is always up to date.
 - **Daily Monitoring**: Compare the current ranking with that of the day before and indicates the evolution.
 - **Market Sentiment**: Analyze the leaderboard to provide market sentiment using a weighted average of crypto apps' rankings. (Extreme Greed, Greed, Optimism, Doubt, etc.).
-- **Rank Records**: The bot now tracks the highest and lowest ranks achieved by crypto apps, providing a long-term perspective on their performance in the App Store.
+- **Rank Records**: The bot tracks the highest and lowest ranks achieved by crypto apps, providing a long-term perspective on their performance in the App Store.
+- **Alerts Commands**: You can set alert thresholds for your applications. Receive direct messages when the app's rank meets your specified conditions with !alert.
+- **Live Status Updates**: The bot continuously updates its status to show the current ranks of tracked applications, providing real-time insights directly in its Discord status.
 
 <p align="center">
 <a href="https://imgbb.com/"><img src="https://i.ibb.co/Dth3bGh/bot-screen.png" alt="bot-screen" border="0"></a>
@@ -36,7 +38,11 @@ After adding CryptoAppIndex to your server, use the following command to get the
 - <code>!binance</code> : Get the current ranking of the Binance app.
 - <code>!cryptocom</code> : Get the current ranking of the Crypto.com app.
 
-The bot will respond with the current ranking of the app on the App Store.
+Alerts Management: 
+
+- <code>!alert <app-name> <operator></code> : Set alert with condition.
+- <code>!myalerts</code> : Display your current alerts.
+- <code>!rmalert <app-name> and !rmall</code> : Delete one or all alerts.
 
 ## License
 
