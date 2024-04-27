@@ -40,9 +40,9 @@ After adding CryptoAppIndex to your server, use the following command to get the
 
 Alerts Management: 
 
-- <code>!alert <app-name> <operator></code> : Set alert with condition.
+- <code>!alert /app-name/ /operator/ /rank/</code> : Set alert with condition.
 - <code>!myalerts</code> : Display your current alerts.
-- <code>!rmalert <app-name> and !rmall</code> : Delete one or all alerts.
+- <code>!rmalert /app-name/</code> and <code>!rmall</code> : Delete one or all alerts.
 
 ## License
 
