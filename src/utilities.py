@@ -73,3 +73,14 @@ def evaluate_sentiment(coinbase_tracker, wallet_tracker, binance_tracker, crypto
     except ValueError as e:
         print(f"Error converting rank values to integers: {e}")
         return "Error processing rank values."
+
+def weighted_average_sentiment_calculation():
+
+    rank_number_coinbase = int(current_rank_coinbase())
+    rank_number_binance = int(current_rank_binance())
+    rank_number_wallet = int(current_rank_wallet())
+    rank_number_cryptocom = int(current_rank_cryptodotcom())
+
+    weighted_average_rank = (5 * (rank_number_coinbase + rank_number_cryptocom) + 2.5 * rank_number_binance + rank_number_wallet) / 13.5
+
+    return 100 - round(weighted_average_rank)
