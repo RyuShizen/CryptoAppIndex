@@ -6,6 +6,10 @@
 
 CryptoAppIndex is a Discord bot designed to provide the current ranking of crypto apps on the App Store directly within your Discord server. By using a simple command, users can quickly get up-to-date information about Crypto's apps popularity, making this bot a must-have for cryptocurrency and finance communities.
 
+<i>Repo metadata</i>
+
+<a href="https://github.com/SeedSnake/CryptoAppIndex/releases/"><img src="https://img.shields.io/github/tag/SeedSnake/CryptoAppIndex?include_prereleases=&sort=semver&color=blue" alt="GitHub tag"></a>
+
 ## Features
 
 - **Fetch Ranking**: Sends the current ranking of most popular crypto apps (Coinbase, Binance, Crypto.com) on the App Store with simple commands.
@@ -20,10 +24,6 @@ CryptoAppIndex is a Discord bot designed to provide the current ranking of crypt
 
 ## Installation
 
-1. Clone this repository to your server.
-2. Install the dependencies by running `pip install -r requirements.txt`.
-3. Create a `.env` file in the project root and add your `BOT_TOKEN`.
-4. Launch the bot with `python bot.py`.
 
 ## Usage
 
