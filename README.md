@@ -23,7 +23,7 @@ CryptoAppIndex is a Discord bot designed to provide the current ranking of crypt
 
 ## Installation
 
-Click on the inviation below :
+Click on the invitation below :
 
 <a href="https://discord.com/oauth2/authorize?client_id=1217919790593872015"><img src="https://img.shields.io/badge/Discord-Invitation-7289DA?style=for-the-badge" alt="Discord - Invitation"></a>
 ## Usage
