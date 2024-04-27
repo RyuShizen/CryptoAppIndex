@@ -20,7 +20,7 @@ CryptoAppIndex is a Discord bot designed to provide the current ranking of crypt
 - **Live Status Updates**: The bot continuously updates its status to show the current ranks of tracked applications, providing real-time insights directly in its Discord status.
 
 <p align="center">
-<a href="https://ibb.co/28x5VxQ"><img src="https://i.ibb.co/wJVYGVX/appstats.png" alt="appstats" border="0"></a>
+<a href='https://postimg.cc/SnF54fh0' target='_blank'><img src='https://i.postimg.cc/SnF54fh0/appstats.png' border='0' alt='appstats'/></a>
 </p>
 
 ## Installation
