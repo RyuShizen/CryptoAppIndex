@@ -193,7 +193,7 @@ class RankTracker:
 
     async def run(self):
         while True:
-            self.track_rank()
+            await self.track_rank()
             await self.check_alerts()
             await self.update_bot_status()
             await asyncio.sleep(60)  # wait for x seconds
