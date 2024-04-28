@@ -35,17 +35,17 @@ def evaluate_sentiment(coinbase_tracker, wallet_tracker, binance_tracker, crypto
         print(f"Debug: Weighted Average Rank Result: {100 - round(weighted_average_rank)}.")
 
         # Evaluate sentiment based on the weighted average
-        if weighted_average_rank <= 10:
+        if weighted_average_rank < 10:
             sentiment = "🟢🟢🟢 Extreme Greed!"
-        elif weighted_average_rank <= 20:
+        elif weighted_average_rank < 20:
             sentiment = "🟢🟢 Greed!"
-        elif weighted_average_rank <= 25:
+        elif weighted_average_rank < 25:
             sentiment = "🟢 Optimism"
-        elif weighted_average_rank <= 30:
+        elif weighted_average_rank < 30:
             sentiment = "🟡 Doubt"
-        elif weighted_average_rank <= 35:
+        elif weighted_average_rank < 35:
             sentiment = "🟠 Anxiety"
-        elif weighted_average_rank <= 50:
+        elif weighted_average_rank < 50:
             sentiment = "🔴🔴 Fear!"
         else:
             sentiment = "🔴🔴🔴 Capitulation!"
