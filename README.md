@@ -7,7 +7,7 @@
 **ℹ The project is still under development, with many features yet to come. The bot will not always be online until its final version is released. For more information, please contact me. :)**
 
 CryptoAppIndex is a Discord bot designed to provide real-time ranking of crypto apps on the App Store directly within your Discord server. 
-By using a simple command, users can quickly get up-to-date information about Crypto's apps popularity, live positional change, peak rank/lowest rank history, and market sentiment.
+By using a simple command, users can quickly get up-to-date information about Crypto's apps popularity, live positional change, ranks data history, and market sentiment.
 
 When crypto apps rank among the most downloaded, it may signal significant market greed!
 You can monitor these trends and set alerts for ranking changes, ensuring you are always informed about potential market opportunities.
