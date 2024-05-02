@@ -44,13 +44,11 @@ After integrating CryptoAppIndex onto your server, you can utilize the following
 - Use <code>!binance</code> to retrieve the current ranking and all-time highest achieved rank of the Binance app.
 - Use <code>!cryptocom</code> to retrieve the current ranking and all-time highest achieved rank of the Crypto.com app.
 
-<p align="center"><a href="https://ibb.co/mHXGMbR"><img src="https://i.ibb.co/mHXGMbR/c.png" alt="coinbase_command" border="0"></a></p>
-<p align="center">Click to enlarge.</p>
+<p align="center"><a href="https://imgbb.com/"><img src="https://i.ibb.co/Yty3qPN/c.png" alt="coinbase_command" border="0"></a></p>
   
 - <code>!ranks</code> : Provides a comprehensive view of all the current crypto app rankings, historical data for all monitored crypto apps, and the current Bitcoin price with a single command.
 
-<p align="center"><a href="https://ibb.co/D1Bxrdb"><img src="https://i.ibb.co/D1Bxrdb/r.png" alt="ranks_command" border="0"></a></p>
-<p align="center">Click to enlarge.</p>
+<p align="center"><a href="https://imgbb.com/"><img src="https://i.ibb.co/6yK3XQZ/r.png" alt="ranks_command" border="0"></a></p>
 
 Alerts Management: 
 
