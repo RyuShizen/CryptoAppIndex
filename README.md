@@ -39,10 +39,16 @@ Click on the invitation below :
 
 After adding CryptoAppIndex to your server, use the following command to get the current ranking of crypto app:
 
-- <code>!coinbase</code> : Get the current ranking of the Coinbase app.
-- <code>!cwallet</code> : Get the current ranking of the Coinbase's Wallet app.
-- <code>!binance</code> : Get the current ranking of the Binance app.
-- <code>!cryptocom</code> : Get the current ranking of the Crypto.com app.
+- <code>!coinbase</code> : Get the current ranking, and all time high rank achieved of the Coinbase app.
+- <code>!cwallet</code> : Get the current ranking and all time high rank achieved of the Coinbase's Wallet app.
+- <code>!binance</code> : Get the current ranking and all time high rank achieved of the Binance app.
+- <code>!cryptocom</code> : Get the current ranking and all time high rank achieved of the Crypto.com app.
+
+<p align="center"><a href="https://ibb.co/mHXGMbR"><img src="https://i.ibb.co/mHXGMbR/c.png" alt="c" border="0"></a></p>
+  
+- <code>!ranks</code> : Provides a comprehensive view of all the current crypto app rankings, historical data for all monitored crypto apps, and the current Bitcoin price with a single command.
+
+<p align="center"><a href="https://ibb.co/D1Bxrdb"><img src="https://i.ibb.co/D1Bxrdb/r.png" alt="r" border="0"></a></p>
 
 Alerts Management: 
 
