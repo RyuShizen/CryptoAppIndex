@@ -37,18 +37,20 @@ Click on the invitation below :
 
 ## Usage
 
-After adding CryptoAppIndex to your server, use the following command to get the current ranking of crypto app:
+After integrating CryptoAppIndex onto your server, you can utilize the following commands to access the current rankings of various crypto apps and the global market sentiment using a weighted average:
 
-- <code>!coinbase</code> : Get the current ranking, and all time high rank achieved of the Coinbase app.
-- <code>!cwallet</code> : Get the current ranking and all time high rank achieved of the Coinbase's Wallet app.
-- <code>!binance</code> : Get the current ranking and all time high rank achieved of the Binance app.
-- <code>!cryptocom</code> : Get the current ranking and all time high rank achieved of the Crypto.com app.
+- Use <code>!coinbase</code> to retrieve the current ranking and all-time highest achieved rank of the Coinbase app.
+- Use <code>!cwallet</code> to retrieve the current ranking and all-time highest achieved rank of Coinbase's Wallet app.
+- Use <code>!binance</code> to retrieve the current ranking and all-time highest achieved rank of the Binance app.
+- Use <code>!cryptocom</code> to retrieve the current ranking and all-time highest achieved rank of the Crypto.com app.
 
-<p align="center"><a href="https://ibb.co/mHXGMbR"><img src="https://i.ibb.co/mHXGMbR/c.png" alt="c" border="0"></a></p>
+<p align="center"><a href="https://ibb.co/mHXGMbR"><img src="https://i.ibb.co/mHXGMbR/c.png" alt="coinbase_command" border="0"></a></p>
+<p align="center">Click to enlarge.</p>
   
 - <code>!ranks</code> : Provides a comprehensive view of all the current crypto app rankings, historical data for all monitored crypto apps, and the current Bitcoin price with a single command.
 
-<p align="center"><a href="https://ibb.co/D1Bxrdb"><img src="https://i.ibb.co/D1Bxrdb/r.png" alt="r" border="0"></a></p>
+<p align="center"><a href="https://ibb.co/D1Bxrdb"><img src="https://i.ibb.co/D1Bxrdb/r.png" alt="ranks_command" border="0"></a></p>
+<p align="center">Click to enlarge.</p>
 
 Alerts Management: 
 
