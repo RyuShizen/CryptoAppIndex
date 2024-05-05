@@ -13,6 +13,7 @@ from api.apps import current_rank_coinbase, current_rank_wallet, current_rank_bi
 from utilities import number_to_emoji, evaluate_sentiment, weighted_average_sentiment_calculation
 from data_management.database import AppRankTracker
 from tracker import RankTracker
+from data_management.guilds import load_guilds
 
 # Create tracker instances
 coinbase_tracker = AppRankTracker('Coinbase', 'data/rank_data_coinbase.json')
@@ -407,3 +408,38 @@ async def setup_commands(bot):
             )
 
         await interaction.response.send_message(embed=embed)
+
+    @bot.tree.command(name="maintenance", description="Toggle maintenance mode for the bot.")
+    @app_commands.describe(mode="Enter 'on' to start maintenance or 'off' to end it.", reason="Reason for maintenance")
+    @app_commands.choices(mode=[
+        app_commands.Choice(name='on', value='on'),
+        app_commands.Choice(name='off', value='off')
+    ])
+    async def maintenance_command(interaction: discord.Interaction, mode: str, reason: str = "No specific reason provided."):
+        """Handle the maintenance mode command."""
+        if mode == 'on':
+            message = f"🔧 The bot is currently under maintenance. We will come back soon ! \n\n **Issue** : {reason}"
+        else:
+            message = f"✅ Maintenance is complete. Thank you for your patience ! \n\n **Changelog** : {reason}"
+        
+        embed = discord.Embed(title="📢 Maintenance Notice!", description=message, color=0xFF5733 if mode.lower() == "on" else 0x00ff00)
+        embed.set_footer(text="Thank you for your patience.")
+        
+        await notify_all_servers(embed)
+        await interaction.response.send_message(f"Maintenance mode set to {mode}.", ephemeral=True)
+
+    async def notify_all_servers(embed):
+        """Send a notification message to all guilds."""
+        guild_ids = load_guilds()
+        for guild_id in guild_ids:
+            guild = bot.get_guild(guild_id)
+            if guild:
+                target_channel = guild.system_channel
+                if not target_channel:  # Si le canal système n'est pas disponible
+                    # Essayez de trouver un autre canal où le bot peut écrire
+                    for channel in guild.text_channels:
+                        if channel.permissions_for(guild.me).send_messages:
+                            target_channel = channel
+                            break
+                if target_channel:  # Vérifie si un canal a été trouvé
+                    await target_channel.send(embed=embed)

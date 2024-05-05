@@ -7,6 +7,7 @@ import os
 from config import BOT_TOKEN
 from tracker import RankTracker
 from commands import setup_commands  # Ensure this properly imports your command setup functions
+from data_management.guilds import add_guild, remove_guild
 
 class MyBot(commands.Bot):
     def __init__(self):
@@ -16,19 +17,10 @@ class MyBot(commands.Bot):
         intents.guilds = True
         super().__init__(command_prefix='!', intents=intents, application_id=os.getenv('DISCORD_APPLICATION_ID'))
 
-    async def setup_hook(self):
-        self.tracker = RankTracker(self)  # Initialize tracker here
-        self.loop.create_task(self.tracker.run())  # Start tracker as a background task
-        await self.tree.sync()
-
-    async def on_ready(self):
-        print(f'Logged in as {self.user.name}')
-        await self.tree.sync()  # Ensure commands are synced globally
-
-    async def on_disconnect(self):
-        print("Bot is disconnecting...")
-
     async def on_guild_join(self, guild):
+        """Événement déclenché lorsque le bot rejoint un serveur."""
+        add_guild(guild.id)  # Ajoute le guild ID au fichier JSON
+        # Ajoute des emojis personnalisés au serveur
         emoji_paths = {
             'coinbase': 'assets/coinbase_icon.png',
             'wallet': 'assets/wallet_icon.png',
@@ -43,6 +35,22 @@ class MyBot(commands.Bot):
                 print(f"Emoji {name} added to {guild.name}.")
             except discord.HTTPException as e:
                 print(f"Failed to add emoji {name} to {guild.name}: {str(e)}")
+
+    async def on_guild_remove(self, guild):
+        """Événement déclenché lorsque le bot est retiré d'un serveur."""
+        remove_guild(guild.id)
+
+    async def setup_hook(self):
+        self.tracker = RankTracker(self)  # Initialize tracker here
+        self.loop.create_task(self.tracker.run())  # Start tracker as a background task
+        await self.tree.sync()
+
+    async def on_ready(self):
+        print(f'Logged in as {self.user.name}')
+        await self.tree.sync()  # Ensure commands are synced globally
+
+    async def on_disconnect(self):
+        print("Bot is disconnecting...")
 
 async def main():
     bot = MyBot()
