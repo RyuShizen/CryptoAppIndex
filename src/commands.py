@@ -70,13 +70,13 @@ async def setup_commands(bot):
         embed = Embed(title="Coinbase Statistics", description="Real-time tracking and analysis of the Coinbase app ranking.", color=0x0052ff)
         file_thumb = File("assets/coinbase-coin-seeklogo.png", filename="coinbase_logo.png")
         embed.set_thumbnail(url="attachment://coinbase_logo.png")
-        embed.add_field(name="🏆 Current Rank", value=f"#️⃣{number_to_emoji(rank_number_coinbase)} in Finance on {current_datetime_hour}", inline=False)
+        embed.add_field(name="🏆 Current Rank", value=f"#️⃣{number_to_emoji(rank_number_coinbase)} ``in Finance on {current_datetime_hour}``", inline=False)
         embed.add_field(name="🔂 Recent Positional Change", value=change_symbol, inline=False)
         if highest_rank:
-            embed.add_field(name="📈 Peak Rank Achieved (ATH)", value=f"#️⃣{number_to_emoji(highest_rank['rank'])} on {highest_rank['timestamp']}", inline=True)
+            embed.add_field(name="📈 Peak Rank Achieved (ATH)", value=f"#️⃣{number_to_emoji(highest_rank['rank'])} ``on {highest_rank['timestamp']}``", inline=True)
         if lowest_rank:
-            embed.add_field(name="📉 Recent Lowest Rank (ATL)", value=f"#️⃣{number_to_emoji(lowest_rank['rank'])} on {lowest_rank['timestamp']}", inline=True)
-        embed.add_field(name="🚥 Market Sentiment", value=f"Score: {average_sentiment_calculation}\nFeeling: {sentiment_text}", inline=False)
+            embed.add_field(name="📉 Recent Lowest Rank (ATL)", value=f"#️⃣{number_to_emoji(lowest_rank['rank'])} ``on {lowest_rank['timestamp']}``", inline=True)
+        embed.add_field(name="🚥 Market Sentiment", value=f"Score: ``{average_sentiment_calculation}``\nFeeling: ``{sentiment_text}``", inline=False)
         file_sentiment = File(f"assets/{sentiment_image_filename}", filename=sentiment_image_filename)
         embed.set_image(url=f"attachment://{sentiment_image_filename}")
         avatar_url = interaction.user.avatar.url if interaction.user.avatar else None
@@ -101,14 +101,14 @@ async def setup_commands(bot):
         file_thumb = File("assets/coinbase-wallet-seeklogo.png", filename="coinbase_wallet_logo.png")
         embed.set_thumbnail(url="attachment://coinbase_wallet_logo.png")
 
-        embed.add_field(name="🏆 Current Rank", value=f"#️⃣{number_to_emoji(rank_number_wallet)} in Finance on {current_datetime_hour}", inline=False)
+        embed.add_field(name="🏆 Current Rank", value=f"#️⃣{number_to_emoji(rank_number_wallet)} ``in Finance on {current_datetime_hour}``", inline=False)
         embed.add_field(name="🔂 Recent Positional Change", value=change_symbol, inline=False)
         if highest_rank:
-            embed.add_field(name="📈 Peak Rank Achieved (ATH)", value=f"#️⃣{number_to_emoji(highest_rank['rank'])} on {highest_rank['timestamp']}", inline=True)
+            embed.add_field(name="📈 Peak Rank Achieved (ATH)", value=f"#️⃣{number_to_emoji(highest_rank['rank'])} ``on {highest_rank['timestamp']}``", inline=True)
         if lowest_rank:
-            embed.add_field(name="📉 Recent Lowest Rank (ATL)", value=f"#️⃣{number_to_emoji(lowest_rank['rank'])} on {lowest_rank['timestamp']}", inline=True)
+            embed.add_field(name="📉 Recent Lowest Rank (ATL)", value=f"#️⃣{number_to_emoji(lowest_rank['rank'])} ``on {lowest_rank['timestamp']}``", inline=True)
 
-        embed.add_field(name="🚥 Market Sentiment", value=f"Score: {average_sentiment_calculation}\nFeeling: {sentiment_text}", inline=False)
+        embed.add_field(name="🚥 Market Sentiment", value=f"Score: ``{average_sentiment_calculation}``\nFeeling: ``{sentiment_text}``", inline=False)
         file_sentiment = File(f"assets/{sentiment_image_filename}", filename=sentiment_image_filename)
         embed.set_image(url=f"attachment://{sentiment_image_filename}")
 
@@ -133,13 +133,13 @@ async def setup_commands(bot):
         embed = Embed(title="Binance Statistics", description="Real-time tracking and analysis of the Binance app ranking.", color=0xf3ba2f)
         file_thumb = File("assets/binance-smart-chain-bsc-seeklogo.png", filename="binance_logo.png")
         embed.set_thumbnail(url="attachment://binance_logo.png")
-        embed.add_field(name="🏆 Current Rank", value=f"#️⃣{number_to_emoji(rank_number_binance)} in Finance on {current_datetime_hour}", inline=False)
+        embed.add_field(name="🏆 Current Rank", value=f"#️⃣{number_to_emoji(rank_number_binance)} ``in Finance on {current_datetime_hour}``", inline=False)
         embed.add_field(name="🔂 Recent Positional Change", value=change_symbol, inline=False)
         if highest_rank:
-            embed.add_field(name="📈 Peak Rank Achieved (ATH)", value=f"#️⃣{number_to_emoji(highest_rank['rank'])} on {highest_rank['timestamp']}", inline=True)
+            embed.add_field(name="📈 Peak Rank Achieved (ATH)", value=f"#️⃣{number_to_emoji(highest_rank['rank'])} ``on {highest_rank['timestamp']}``", inline=True)
         if lowest_rank:
-            embed.add_field(name="📉 Recent Lowest Rank (ATL)", value=f"#️⃣{number_to_emoji(lowest_rank['rank'])} on {lowest_rank['timestamp']}", inline=True)
-        embed.add_field(name="🚥 Market Sentiment", value=f"Score: {average_sentiment_calculation}\nFeeling: {sentiment_text}", inline=False)
+            embed.add_field(name="📉 Recent Lowest Rank (ATL)", value=f"#️⃣{number_to_emoji(lowest_rank['rank'])} ``on {lowest_rank['timestamp']}``", inline=True)
+        embed.add_field(name="🚥 Market Sentiment", value=f"Score: ``{average_sentiment_calculation}``\nFeeling: ``{sentiment_text}``", inline=False)
         file_sentiment = File(f"assets/{sentiment_image_filename}", filename=sentiment_image_filename)
         embed.set_image(url=f"attachment://{sentiment_image_filename}")
         avatar_url = interaction.user.avatar.url if interaction.user.avatar else None
@@ -163,13 +163,13 @@ async def setup_commands(bot):
         embed = Embed(title="Crypto.com Statistics", description="Real-time tracking and analysis of the Crypto.com app ranking.", color=0x1c64b0)
         file_thumb = File("assets/crypto-com-seeklogo.png", filename="cryptodotcom_logo.png")
         embed.set_thumbnail(url="attachment://cryptodotcom_logo.png")
-        embed.add_field(name="🏆 Current Rank", value=f"#️⃣{number_to_emoji(rank_number_cryptodotcom)} in Finance on {current_datetime_hour}", inline=False)
+        embed.add_field(name="🏆 Current Rank", value=f"#️⃣{number_to_emoji(rank_number_cryptodotcom)} ``in Finance on {current_datetime_hour}``", inline=False)
         embed.add_field(name="🔂 Recent Positional Change", value=change_symbol, inline=False)
         if highest_rank:
-            embed.add_field(name="📈 Peak Rank Achieved (ATH)", value=f"#️⃣{number_to_emoji(highest_rank['rank'])} on {highest_rank['timestamp']}", inline=True)
+            embed.add_field(name="📈 Peak Rank Achieved (ATH)", value=f"#️⃣{number_to_emoji(highest_rank['rank'])} ``on {highest_rank['timestamp']}``", inline=True)
         if lowest_rank:
-            embed.add_field(name="📉 Recent Lowest Rank (ATL)", value=f"#️⃣{number_to_emoji(lowest_rank['rank'])} on {lowest_rank['timestamp']}", inline=True)
-        embed.add_field(name="🚥 Market Sentiment", value=f"Score: {average_sentiment_calculation}\nFeeling: {sentiment_text}", inline=False)
+            embed.add_field(name="📉 Recent Lowest Rank (ATL)", value=f"#️⃣{number_to_emoji(lowest_rank['rank'])} ``on {lowest_rank['timestamp']}``", inline=True)
+        embed.add_field(name="🚥 Market Sentiment", value=f"Score: ``{average_sentiment_calculation}``\nFeeling: ``{sentiment_text}``", inline=False)
         file_sentiment = File(f"assets/{sentiment_image_filename}", filename=sentiment_image_filename)
         embed.set_image(url=f"attachment://{sentiment_image_filename}")
         avatar_url = interaction.user.avatar.url if interaction.user.avatar else None
@@ -231,7 +231,7 @@ async def setup_commands(bot):
             with open('data/alerts.json', 'w') as f:
                 json.dump(alerts, f, indent=4)
 
-            embed = Embed(description=f"✅🔔 Alert set for {app_name} when rank ``{operator} {rank}``.", color=0x00ff00)
+            embed = Embed(description=f"✅🔔 Alert set for ``{app_name}`` when rank ``{operator} {rank}``.", color=0x00ff00)
             avatar_url = interaction.user.avatar.url if interaction.user.avatar else None
             embed.set_footer(text=f"Requested by {interaction.user.display_name}", icon_url=avatar_url if avatar_url else None)
             await interaction.response.send_message(embed=embed, ephemeral=False)
@@ -389,10 +389,10 @@ async def setup_commands(bot):
             change_text = "No data"
             if isinstance(current_rank, int) and isinstance(yesterday_rank, int):
                 if current_rank < yesterday_rank:
-                    change_icon = "🔼"  # Rank improved
+                    change_icon = "🔼+"  # Rank improved
                     change = yesterday_rank - current_rank
                 elif current_rank > yesterday_rank:
-                    change_icon = "🔻"  # Rank worsened
+                    change_icon = "🔻-"  # Rank worsened
                     change = current_rank - yesterday_rank
                 else:
                     change_icon = ""  # No change
@@ -403,7 +403,7 @@ async def setup_commands(bot):
 
             embed.add_field(
                 name=f"{emoji_ids[app]} {app.capitalize()} Rank",
-                value=f"``Current: #️⃣{number_to_emoji(current_rank)} ({change_text}) | Yesterday: #️⃣{number_to_emoji(yesterday_rank)} | Last Week: #️⃣{number_to_emoji(last_week_rank)} | Last Month: #️⃣{number_to_emoji(last_month_rank)}``",
+                value=f"``Current``: #️⃣{number_to_emoji(current_rank)} ({change_text}) | ``Yesterday``: #️⃣{number_to_emoji(yesterday_rank)} | ``Last Week``: #️⃣{number_to_emoji(last_week_rank)} | ``Last Month``: #️⃣{number_to_emoji(last_month_rank)}",
                 inline=False
             )
 
