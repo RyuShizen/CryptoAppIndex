@@ -5,10 +5,10 @@ from bs4 import BeautifulSoup
 
 async def current_rank_coinbase():
     url = "https://apps.apple.com/us/app/coinbase-buy-bitcoin-ether/id886427730"
-    async with aiohttp.ClientSession() as session:  # Utilise aiohttp.ClientSession pour la gestion des requêtes
-        async with session.get(url) as response:  # Exécute la requête de manière asynchrone
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as response:
             if response.status == 200:
-                text = await response.text()  # Récupère le texte de la réponse de manière asynchrone
+                text = await response.text()
                 soup = BeautifulSoup(text, 'html.parser')
                 rank_element = soup.find('a', class_='inline-list__item', href=True, text=lambda t: 'in Finance' in t)
                 if rank_element:
@@ -18,10 +18,10 @@ async def current_rank_coinbase():
 
 async def current_rank_wallet():
     url = "https://apps.apple.com/us/app/coinbase-wallet-nfts-crypto/id1278383455"
-    async with aiohttp.ClientSession() as session:  # Utilise aiohttp.ClientSession pour la gestion des requêtes
-        async with session.get(url) as response:  # Exécute la requête de manière asynchrone
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as response:
             if response.status == 200:
-                text = await response.text()  # Récupère le texte de la réponse de manière asynchrone
+                text = await response.text()
                 soup = BeautifulSoup(text, 'html.parser')
                 rank_element = soup.find('a', class_='inline-list__item', href=True, text=lambda t: 'in Finance' in t)
                 if rank_element:

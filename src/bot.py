@@ -6,7 +6,7 @@ import os
 
 from config import BOT_TOKEN
 from tracker import RankTracker
-from commands import setup_commands  # Ensure this properly imports your command setup functions
+from commands import setup_commands
 from data_management.guilds import add_guild, remove_guild
 
 class MyBot(commands.Bot):
@@ -19,8 +19,8 @@ class MyBot(commands.Bot):
 
     async def on_guild_join(self, guild):
         """Événement déclenché lorsque le bot rejoint un serveur."""
-        add_guild(guild.id)  # Ajoute le guild ID au fichier JSON
-        # Ajoute des emojis personnalisés au serveur
+        add_guild(guild.id)
+
         emoji_paths = {
             'coinbase': 'assets/coinbase_icon.png',
             'wallet': 'assets/wallet_icon.png',

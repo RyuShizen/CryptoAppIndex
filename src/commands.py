@@ -14,14 +14,15 @@ from utilities import number_to_emoji, evaluate_sentiment, weighted_average_sent
 from data_management.database import AppRankTracker
 from tracker import RankTracker
 from data_management.guilds import load_guilds
+from config import discord_user_id
 
-# instances will become obsolete
+# iInstances will become obsolete
 coinbase_tracker = AppRankTracker('Coinbase', 'data/rank_data_coinbase.json')
 wallet_tracker = AppRankTracker('Wallet', 'data/rank_data_wallet.json')
 binance_tracker = AppRankTracker('Binance', 'data/rank_data_binance.json')
 cryptodotcom_tracker = AppRankTracker('Crypto.com', 'data/rank_data_cryptodotcom.json')
 
-# new instances to fetch ranks
+# New instances to fetch ranks
 ath_coinbase_tracker = AppRankTracker('coinbase', 'data/coinbase_rank_history.json')
 ath_wallet_tracker = AppRankTracker('wallet', 'data/wallet_rank_history.json')
 ath_binance_tracker = AppRankTracker('binance', 'data/binance_rank_history.json')
@@ -423,16 +424,19 @@ async def setup_commands(bot):
     ])
     async def maintenance_command(interaction: discord.Interaction, mode: str, reason: str = "No specific reason provided."):
         """Handle the maintenance mode command."""
-        if mode == 'on':
-            message = f"🔧 The bot is currently under maintenance. We will come back soon ! \n\n **Issue** : {reason}"
+        if interaction.user.id == int(discord_user_id):
+            if mode == 'on':
+                message = f"🔧 The bot is currently under maintenance. We will come back soon ! \n\n **Issue** : {reason}"
+            else:
+                message = f"✅ Maintenance is complete. Thank you for your patience ! \n\n **Changelog** : {reason}"
+            
+            embed = discord.Embed(title="📢 Maintenance Notice!", description=message, color=0xFF5733 if mode.lower() == "on" else 0x00ff00)
+            embed.set_footer(text="Thank you for your patience.")
+            
+            await notify_all_servers(embed)
+            await interaction.response.send_message(f"Maintenance mode set to {mode}.", ephemeral=True)
         else:
-            message = f"✅ Maintenance is complete. Thank you for your patience ! \n\n **Changelog** : {reason}"
-        
-        embed = discord.Embed(title="📢 Maintenance Notice!", description=message, color=0xFF5733 if mode.lower() == "on" else 0x00ff00)
-        embed.set_footer(text="Thank you for your patience.")
-        
-        await notify_all_servers(embed)
-        await interaction.response.send_message(f"Maintenance mode set to {mode}.", ephemeral=True)
+            await interaction.response.send_message("You are not authorized to use this command.", ephemeral=True)
 
     async def notify_all_servers(embed):
         """Send a notification message to all guilds."""
@@ -441,11 +445,10 @@ async def setup_commands(bot):
             guild = bot.get_guild(guild_id)
             if guild:
                 target_channel = guild.system_channel
-                if not target_channel:  # Si le canal système n'est pas disponible
-                    # Essayez de trouver un autre canal où le bot peut écrire
+                if not target_channel:
                     for channel in guild.text_channels:
                         if channel.permissions_for(guild.me).send_messages:
                             target_channel = channel
                             break
-                if target_channel:  # Vérifie si un canal a été trouvé
+                if target_channel:
                     await target_channel.send(embed=embed)

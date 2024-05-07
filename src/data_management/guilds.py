@@ -1,7 +1,6 @@
 import json
 import os
 
-# Chemin vers le fichier JSON qui stocke les identifiants des serveurs
 GUILDS_FILE_PATH = 'data/guilds.json'
 
 def load_guilds():
