@@ -46,15 +46,15 @@ After integrating CryptoAppIndex onto your server, you can utilize the following
 
 <p align="center"><a href="https://imgbb.com/"><img src="https://i.ibb.co/Yty3qPN/c.png" alt="coinbase_command" border="0"></a></p>
   
-- <code>/ranks</code> : Provides a comprehensive view of all the current crypto app rankings, historical data for all monitored crypto apps, and the current Bitcoin price with a single command.
+- <code>/all_ranks</code> : Provides a comprehensive view of all the current crypto app rankings, historical data for all monitored crypto apps, and the current Bitcoin price with a single command.
 
 <p align="center"><a href="https://imgbb.com/"><img src="https://i.ibb.co/6yK3XQZ/r.png" alt="ranks_command" border="0"></a></p>
 
 Alerts Management: 
 
-- <code>/alert < app-name > < operator > < rank ></code> : Set alert with condition.
+- <code>/set_alert < app-name > < operator > < rank ></code> : Set alert with condition.
 - <code>/myalerts</code> : Display your current alerts.
-- <code>/rmalert < app-name ></code> and <code>/rmall</code> : Delete one or all alerts.
+- <code>/remove_alert < app-name ></code> and <code>/remove_all_alerts</code> : Delete one or all alerts.
 
 ## License
 
