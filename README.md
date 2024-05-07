@@ -52,9 +52,9 @@ After integrating CryptoAppIndex onto your server, you can utilize the following
 
 Alerts Management: 
 
-- <code>/alert /app-name/ /operator/ /rank/</code> : Set alert with condition.
+- <code>/alert < app-name > < operator > < rank ></code> : Set alert with condition.
 - <code>/myalerts</code> : Display your current alerts.
-- <code>/rmalert /app-name/</code> and <code>/rmall</code> : Delete one or all alerts.
+- <code>/rmalert < app-name ></code> and <code>/rmall</code> : Delete one or all alerts.
 
 ## License
 
