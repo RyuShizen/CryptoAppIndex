@@ -15,11 +15,17 @@ from data_management.database import AppRankTracker
 from tracker import RankTracker
 from data_management.guilds import load_guilds
 
-# Create tracker instances
+# instances will become obsolete
 coinbase_tracker = AppRankTracker('Coinbase', 'data/rank_data_coinbase.json')
 wallet_tracker = AppRankTracker('Wallet', 'data/rank_data_wallet.json')
 binance_tracker = AppRankTracker('Binance', 'data/rank_data_binance.json')
 cryptodotcom_tracker = AppRankTracker('Crypto.com', 'data/rank_data_cryptodotcom.json')
+
+# new instances to fetch ranks
+ath_coinbase_tracker = AppRankTracker('coinbase', 'data/coinbase_rank_history.json')
+ath_wallet_tracker = AppRankTracker('wallet', 'data/wallet_rank_history.json')
+ath_binance_tracker = AppRankTracker('binance', 'data/binance_rank_history.json')
+ath_cryptodotcom_tracker = AppRankTracker('cryptocom', 'data/cryptocom_rank_history.json')
 
 async def setup_commands(bot):
 
@@ -65,7 +71,7 @@ async def setup_commands(bot):
 
         sentiment_text, sentiment_image_filename = await evaluate_sentiment()
         change_symbol = await coinbase_tracker.compare_ranks(rank_number_coinbase)
-        highest_rank, lowest_rank = await coinbase_tracker.get_extreme_ranks()
+        highest_rank, lowest_rank = await ath_coinbase_tracker.get_extreme_ranks()
 
         embed = Embed(title="Coinbase Statistics", description="Real-time tracking and analysis of the Coinbase app ranking.", color=0x0052ff)
         file_thumb = File("assets/coinbase-coin-seeklogo.png", filename="coinbase_logo.png")
@@ -76,7 +82,7 @@ async def setup_commands(bot):
             embed.add_field(name="📈 Peak Rank Achieved (ATH)", value=f"#️⃣{number_to_emoji(highest_rank['rank'])} ``on {highest_rank['timestamp']}``", inline=True)
         if lowest_rank:
             embed.add_field(name="📉 Recent Lowest Rank (ATL)", value=f"#️⃣{number_to_emoji(lowest_rank['rank'])} ``on {lowest_rank['timestamp']}``", inline=True)
-        embed.add_field(name="🚥 Market Sentiment", value=f"Score: ``{average_sentiment_calculation}``\nFeeling: ``{sentiment_text}``", inline=False)
+        embed.add_field(name="🚥 Current Market Sentiment", value=f"Score: ``{average_sentiment_calculation}``\nFeeling: ``{sentiment_text}``", inline=False)
         file_sentiment = File(f"assets/{sentiment_image_filename}", filename=sentiment_image_filename)
         embed.set_image(url=f"attachment://{sentiment_image_filename}")
         avatar_url = interaction.user.avatar.url if interaction.user.avatar else None
@@ -95,7 +101,7 @@ async def setup_commands(bot):
 
         sentiment_text, sentiment_image_filename = await evaluate_sentiment()
         change_symbol = await wallet_tracker.compare_ranks(rank_number_wallet)
-        highest_rank, lowest_rank = await wallet_tracker.get_extreme_ranks()
+        highest_rank, lowest_rank = await ath_wallet_tracker.get_extreme_ranks()
 
         embed = Embed(title="Coinbase's Wallet Statistics", description="Real-time tracking and analysis of the Coinbase's Wallet app ranking.", color=0x0052ff)
         file_thumb = File("assets/coinbase-wallet-seeklogo.png", filename="coinbase_wallet_logo.png")
@@ -108,7 +114,7 @@ async def setup_commands(bot):
         if lowest_rank:
             embed.add_field(name="📉 Recent Lowest Rank (ATL)", value=f"#️⃣{number_to_emoji(lowest_rank['rank'])} ``on {lowest_rank['timestamp']}``", inline=True)
 
-        embed.add_field(name="🚥 Market Sentiment", value=f"Score: ``{average_sentiment_calculation}``\nFeeling: ``{sentiment_text}``", inline=False)
+        embed.add_field(name="🚥 Current Market Sentiment", value=f"Score: ``{average_sentiment_calculation}``\nFeeling: ``{sentiment_text}``", inline=False)
         file_sentiment = File(f"assets/{sentiment_image_filename}", filename=sentiment_image_filename)
         embed.set_image(url=f"attachment://{sentiment_image_filename}")
 
@@ -128,7 +134,7 @@ async def setup_commands(bot):
 
         sentiment_text, sentiment_image_filename = await evaluate_sentiment()
         change_symbol = await binance_tracker.compare_ranks(rank_number_binance)
-        highest_rank, lowest_rank = await binance_tracker.get_extreme_ranks()
+        highest_rank, lowest_rank = await ath_cryptodotcom_tracker.get_extreme_ranks()
 
         embed = Embed(title="Binance Statistics", description="Real-time tracking and analysis of the Binance app ranking.", color=0xf3ba2f)
         file_thumb = File("assets/binance-smart-chain-bsc-seeklogo.png", filename="binance_logo.png")
@@ -139,7 +145,7 @@ async def setup_commands(bot):
             embed.add_field(name="📈 Peak Rank Achieved (ATH)", value=f"#️⃣{number_to_emoji(highest_rank['rank'])} ``on {highest_rank['timestamp']}``", inline=True)
         if lowest_rank:
             embed.add_field(name="📉 Recent Lowest Rank (ATL)", value=f"#️⃣{number_to_emoji(lowest_rank['rank'])} ``on {lowest_rank['timestamp']}``", inline=True)
-        embed.add_field(name="🚥 Market Sentiment", value=f"Score: ``{average_sentiment_calculation}``\nFeeling: ``{sentiment_text}``", inline=False)
+        embed.add_field(name="🚥 Current Market Sentiment", value=f"Score: ``{average_sentiment_calculation}``\nFeeling: ``{sentiment_text}``", inline=False)
         file_sentiment = File(f"assets/{sentiment_image_filename}", filename=sentiment_image_filename)
         embed.set_image(url=f"attachment://{sentiment_image_filename}")
         avatar_url = interaction.user.avatar.url if interaction.user.avatar else None
@@ -158,7 +164,7 @@ async def setup_commands(bot):
 
         sentiment_text, sentiment_image_filename = await evaluate_sentiment()
         change_symbol = await cryptodotcom_tracker.compare_ranks(rank_number_cryptodotcom)
-        highest_rank, lowest_rank = await cryptodotcom_tracker.get_extreme_ranks()
+        highest_rank, lowest_rank = await ath_cryptodotcom_tracker.get_extreme_ranks()
 
         embed = Embed(title="Crypto.com Statistics", description="Real-time tracking and analysis of the Crypto.com app ranking.", color=0x1c64b0)
         file_thumb = File("assets/crypto-com-seeklogo.png", filename="cryptodotcom_logo.png")
@@ -169,7 +175,7 @@ async def setup_commands(bot):
             embed.add_field(name="📈 Peak Rank Achieved (ATH)", value=f"#️⃣{number_to_emoji(highest_rank['rank'])} ``on {highest_rank['timestamp']}``", inline=True)
         if lowest_rank:
             embed.add_field(name="📉 Recent Lowest Rank (ATL)", value=f"#️⃣{number_to_emoji(lowest_rank['rank'])} ``on {lowest_rank['timestamp']}``", inline=True)
-        embed.add_field(name="🚥 Market Sentiment", value=f"Score: ``{average_sentiment_calculation}``\nFeeling: ``{sentiment_text}``", inline=False)
+        embed.add_field(name="🚥 Current Market Sentiment", value=f"Score: ``{average_sentiment_calculation}``\nFeeling: ``{sentiment_text}``", inline=False)
         file_sentiment = File(f"assets/{sentiment_image_filename}", filename=sentiment_image_filename)
         embed.set_image(url=f"attachment://{sentiment_image_filename}")
         avatar_url = interaction.user.avatar.url if interaction.user.avatar else None

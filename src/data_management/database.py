@@ -43,15 +43,45 @@ class AppRankTracker:
             print("No need to update rank data; rank unchanged.")
 
     async def get_extreme_ranks(self):
+        """Parcourt l'historique des rangs pour trouver les extrêmes."""
         try:
-            async with aiofiles.open(self.file_path, 'r') as f:
-                data = await f.read()
-                data = json.loads(data)
-            highest_rank = data.get('highest_rank', {})
-            lowest_rank = data.get('lowest_rank', {})
+            async with aiofiles.open(self.file_path, 'r') as file:
+                data = await file.read()
+                history = json.loads(data)
+
+            highest_rank = {'rank': float('inf'), 'timestamp': None}
+            lowest_rank = {'rank': float('-inf'), 'timestamp': None}
+
+            if not isinstance(history, dict):
+                raise ValueError("History data is not a dictionary.")
+
+            for year, months in history.items():
+                if not isinstance(months, dict):
+                    continue  # Skip incorrect data entries
+
+                for month, days in months.items():
+                    if not isinstance(days, dict):
+                        continue  # Skip incorrect data entries
+
+                    for day, ranks in days.items():
+                        for entry in ranks:
+                            rank = entry['rank']
+                            timestamp = entry['timestamp']
+                            if rank < highest_rank['rank']:
+                                highest_rank = {'rank': rank, 'timestamp': self.format_timestamp(timestamp)}
+                            if rank > lowest_rank['rank']:
+                                lowest_rank = {'rank': rank, 'timestamp': self.format_timestamp(timestamp)}
+
             return highest_rank, lowest_rank
-        except (FileNotFoundError, json.JSONDecodeError):
+
+        except (FileNotFoundError, json.JSONDecodeError, ValueError) as e:
+            print(f"Failed to read or parse the rank history file: {e}")
             return None, None
+
+    def format_timestamp(self, timestamp):
+        """Convertit un timestamp ISO en une date plus lisible."""
+        datetime_obj = datetime.fromisoformat(timestamp.replace('Z', '+00:00'))
+        return datetime_obj.strftime('%Y-%m-%d')
 
     async def get_date_from_json(self):
         try:

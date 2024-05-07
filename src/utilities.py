@@ -6,9 +6,7 @@ def number_to_emoji(number):
         '5': '5️⃣', '6': '6️⃣', '7': '7️⃣', '8': '8️⃣', '9': '9️⃣'
     }
     try:
-        # Ensure the number can be converted to a string of digits
-        # This will also validate that it's possible to iterate over the string
-        return ''.join(digit_to_emoji[digit] for digit in str(number))
+        return ''.join(digit_to_emoji[digit] for digit in str(number) if digit.isdigit())
     except KeyError as e:
         # If a KeyError occurs, it means 'number' contained a non-digit character
         print(f"Non-digit character encountered: {e}")
