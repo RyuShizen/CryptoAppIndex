@@ -21,7 +21,7 @@ You can monitor these trends and set alerts for ranking changes, ensuring you ar
 - **Automatic Updates**: The bot fetches the most recent data with each command, ensuring the information is always up to date.
 - **Daily Monitoring**: Compare the current ranking with that of the day before and indicates the evolution.
 - **Market Sentiment**: Analyze the leaderboard to provide market sentiment using a weighted average of crypto apps' rankings. (Extreme Greed, Greed, Optimism, Doubt, etc.).
-- **Rank Records**: The bot tracks the highest and lowest ranks achieved by crypto apps, providing a long-term perspective on their performance in the App Store.
+- **Rank Records**: The bot tracks the highest and lowest ranks achieved by crypto apps and historical charts, providing a long-term perspective on their performance in the App Store.
 - **Alerts Commands**: You can set alert thresholds for your applications. Receive direct messages when the app's rank meets your specified conditions with !alert.
 - **Live Status Updates**: The bot continuously updates its status to show the current ranks of tracked applications, providing real-time insights directly in its Discord status.
 
@@ -31,30 +31,30 @@ You can monitor these trends and set alerts for ranking changes, ensuring you ar
 
 ## Installation
 
-Click on the invitation below (The bot will be up soon! 🔜👀):
+Click on the invitation below:
 
-<a href=""><img src="https://img.shields.io/badge/Discord-Invitation-7289DA?style=for-the-badge&logo=discord&logoColor=white" alt="Discord - Invitation"></a>
+<a href="https://discord.com/oauth2/authorize?client_id=1217919790593872015"><img src="https://img.shields.io/badge/Discord-Invitation-7289DA?style=for-the-badge&logo=discord&logoColor=white" alt="Discord - Invitation"></a>
 
 ## Usage
 
 After integrating CryptoAppIndex onto your server, you can utilize the following commands to access the current rankings of various crypto apps and the global market sentiment using a weighted average:
 
-- Use <code>!coinbase</code> to retrieve the current ranking and all-time highest achieved rank of the Coinbase app.
-- Use <code>!cwallet</code> to retrieve the current ranking and all-time highest achieved rank of Coinbase's Wallet app.
-- Use <code>!binance</code> to retrieve the current ranking and all-time highest achieved rank of the Binance app.
-- Use <code>!cryptocom</code> to retrieve the current ranking and all-time highest achieved rank of the Crypto.com app.
+- Use <code>/coinbase</code> to retrieve the current ranking and all-time highest achieved rank of the Coinbase app.
+- Use <code>/cwallet</code> to retrieve the current ranking and all-time highest achieved rank of Coinbase's Wallet app.
+- Use <code>/binance</code> to retrieve the current ranking and all-time highest achieved rank of the Binance app.
+- Use <code>/cryptocom</code> to retrieve the current ranking and all-time highest achieved rank of the Crypto.com app.
 
 <p align="center"><a href="https://imgbb.com/"><img src="https://i.ibb.co/Yty3qPN/c.png" alt="coinbase_command" border="0"></a></p>
   
-- <code>!ranks</code> : Provides a comprehensive view of all the current crypto app rankings, historical data for all monitored crypto apps, and the current Bitcoin price with a single command.
+- <code>/ranks</code> : Provides a comprehensive view of all the current crypto app rankings, historical data for all monitored crypto apps, and the current Bitcoin price with a single command.
 
 <p align="center"><a href="https://imgbb.com/"><img src="https://i.ibb.co/6yK3XQZ/r.png" alt="ranks_command" border="0"></a></p>
 
 Alerts Management: 
 
-- <code>!alert /app-name/ /operator/ /rank/</code> : Set alert with condition.
-- <code>!myalerts</code> : Display your current alerts.
-- <code>!rmalert /app-name/</code> and <code>!rmall</code> : Delete one or all alerts.
+- <code>/alert /app-name/ /operator/ /rank/</code> : Set alert with condition.
+- <code>/myalerts</code> : Display your current alerts.
+- <code>/rmalert /app-name/</code> and <code>/rmall</code> : Delete one or all alerts.
 
 ## License
 
