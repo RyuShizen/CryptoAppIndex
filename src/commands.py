@@ -178,7 +178,7 @@ async def setup_commands(bot):
         await cryptodotcom_tracker.save_rank(rank_number_cryptodotcom)
         await interaction.response.send_message(files=[file_thumb, file_sentiment], embed=embed)
 
-    @bot.tree.command(name="set_alert", description="Set an alert for a specific crypto app rank change")
+    @bot.tree.command(name="set_alert", description="Set an alert to be notified when a specific crypto app reaches a designated rank.")
     @app_commands.describe(
         operator="The comparison operator for the alert (e.g., >, <, >=, <=)",
         rank="The rank threshold for the alert"
@@ -237,10 +237,10 @@ async def setup_commands(bot):
             print(f"Failed to set or check alerts due to an error: {e}")
             await interaction.response.send_message("🚨 Failed to set alert due to an internal error.", ephemeral=True)
 
-    @bot.tree.command(name="set_notification", description="Set an daily/hebdo notification for a specific crypto app rank")
+    @bot.tree.command(name="set_notification", description="Receive daily or weekly updates on the position of a specific crypto app on the App Store.")
     @app_commands.describe(
-        interval="The interval to send notification for your specific crypto app (daily, hebdo)",
-        hour="The hour of the day to receive the notification (6h, 12h, 18h, 22h)"
+    interval = "The interval to send notifications for your specific crypto app (daily, weekly)",
+    hour = "The hour of the day to receive the notification (6 AM, 12 PM, 6 PM, 10 PM)"
     )
     @app_commands.choices(
         app_name=[
@@ -251,13 +251,13 @@ async def setup_commands(bot):
         ],
         interval=[
             app_commands.Choice(name="daily", value="daily"),
-            app_commands.Choice(name="hebdo", value="hebdo"),
+            app_commands.Choice(name="weekly", value="weekly"),
         ],
         hour=[
             app_commands.Choice(name="6 AM", value="6:00"),
-            app_commands.Choice(name="12 AM", value="12:00"),
-            app_commands.Choice(name="13 PM", value="13:00"),
-            app_commands.Choice(name="22 PM", value="22:00")
+            app_commands.Choice(name="12 PM", value="12:00"),
+            app_commands.Choice(name="6 PM", value="18:00"),
+            app_commands.Choice(name="10 PM", value="22:00")
         ]
     )
     async def set_notif_command(interaction: Interaction, app_name: str, interval: str, hour: str):
@@ -342,23 +342,31 @@ async def setup_commands(bot):
             embed = Embed(description=f"🚨 Failed to remove the alert due to an error: {e}", color=Colour.red())
             await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @bot.tree.command(name="myalerts", description="Display your active alerts")
+    @bot.tree.command(name="myalerts", description="Display your active alerts and notifications")
     async def myalerts_command(interaction: Interaction):
         user_id = interaction.user.id
         alert_file_path = 'data/alerts.json'
+        notif_file_path = 'data/notifs.json'
 
         try:
-            with open(alert_file_path, 'r') as file:
-                alerts = json.load(file)
+            with open(alert_file_path, 'r') as file_alerts:
+                alerts = json.load(file_alerts)
                 user_alerts = [alert for alert in alerts if int(alert['user_id']) == user_id]
+            with open(notif_file_path, 'r') as file_notifs:
+                notifs = json.load(file_notifs)
+                user_notifs = [notif for notif in notifs if int(notif['user_id']) == user_id]
 
-            if not user_alerts:
-                embed = Embed(description="🤷‍♂️ You have no active alerts.", color=Colour.blue())
+            if not user_alerts and not user_notifs:
+                embed = Embed(description="🤷‍♂️ You have no active alerts nor notifications.", color=Colour.blue())
             else:
-                embed = Embed(title="🔂🔔 Your Active Alerts", description="", color=Colour.green())
-                for alert in user_alerts:
-                    embed.add_field(name=f"✅ {alert['app_name'].title()} Alert",
-                                    value=f"Trigger: {alert['operator']} {alert['rank']}",
+                embed = Embed(title="🔂🔔 Your Active Alerts & Notifications.", description="", color=Colour.green())
+                for alert in user_alerts: 
+                    embed.add_field(name=f"✅📢 {alert['app_name'].title()} alert(s)",
+                                    value=f"``Trigger: {alert['operator']} {alert['rank']}.``",
+                                    inline=False)
+                for notif in user_notifs: 
+                    embed.add_field(name=f"✅📆 {notif['app_name'].title()} notification(s)",
+                                    value=f"``Frequency: {notif['interval']} at {notif['hour']}.``",
                                     inline=False)
 
             embed.set_footer(text=f"Requested by {interaction.user.display_name}", icon_url=interaction.user.avatar.url if interaction.user.avatar else None)
@@ -412,6 +420,44 @@ async def setup_commands(bot):
             await interaction.response.send_message(embed=embed, ephemeral=True)
         except Exception as e:
             embed = Embed(description=f"🚨 Failed to remove alerts due to an error: {str(e)}", color=0xff0000)
+            embed.set_footer(text=f"Requested by {interaction.user.display_name}", icon_url=interaction.user.avatar.url if interaction.user.avatar else None)
+            await interaction.response.send_message(embed=embed, ephemeral=True)
+
+    @bot.tree.command(name="remove_all_notifications", description="Remove all your set notifications")
+    async def remove_all_notifications_command(interaction: Interaction):
+        user_id = interaction.user.id
+        try:
+            if os.path.exists('data/notifs.json'):
+                with open('data/notifs.json', 'r') as file:
+                    notifs = json.load(file)
+                
+                user_notifs = [notif for notif in notifs if notif['user_id'] == user_id]
+
+                if not user_notifs:
+                    embed = Embed(description="🤷‍♂️ You have no notifications to remove.", color=Colour.blue())
+                    embed.set_footer(text=f"Requested by {interaction.user.display_name}", icon_url=interaction.user.avatar.url if interaction.user.avatar else None)
+                    await interaction.response.send_message(embed=embed, ephemeral=True)
+                    return
+
+                notifs = [notif for notif in notifs if notif['user_id'] != user_id]
+
+                with open('data/notifs.json', 'w') as file:
+                    json.dump(notifs, file, indent=4)
+                
+                embed = Embed(title="🚮✅ Notifications Removed", description="All your notifications have been successfully removed.", color=0x00ff00)
+                embed.set_footer(text=f"Requested by {interaction.user.display_name}", icon_url=interaction.user.avatar.url if interaction.user.avatar else None)
+                await interaction.response.send_message(embed=embed, ephemeral=True)
+            else:
+                embed = Embed(description="🤷‍♂️ No notif file found or no notifs set.", color=Colour.blue())
+                embed.set_footer(text=f"Requested by {interaction.user.display_name}", icon_url=interaction.user.avatar.url if interaction.user.avatar else None)
+                await interaction.response.send_message(embed=embed, ephemeral=True)
+
+        except json.JSONDecodeError as e:
+            embed = Embed(description=f"🚨 Error reading the notif data: {str(e)}", color=0xff0000)
+            embed.set_footer(text=f"Requested by {interaction.user.display_name}", icon_url=interaction.user.avatar.url if interaction.user.avatar else None)
+            await interaction.response.send_message(embed=embed, ephemeral=True)
+        except Exception as e:
+            embed = Embed(description=f"🚨 Failed to remove notifs due to an error: {str(e)}", color=0xff0000)
             embed.set_footer(text=f"Requested by {interaction.user.display_name}", icon_url=interaction.user.avatar.url if interaction.user.avatar else None)
             await interaction.response.send_message(embed=embed, ephemeral=True)
 
