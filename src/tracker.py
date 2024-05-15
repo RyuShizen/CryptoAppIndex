@@ -253,7 +253,7 @@ class RankTracker:
                             if not notif.get('last_sent_day') == now.strftime('%Y-%m-%d'):
                                 await self.send_notif(user_id, app, interval, hour, current_rank)
                                 notif['last_sent_day'] = now.strftime('%Y-%m-%d')
-                        elif interval == 'hebdo' and current_week != last_sent_week:
+                        elif interval == 'weekly' and current_week != last_sent_week:
                             await self.send_notif(user_id, app, interval, hour, current_rank)
                             notif['last_sent_week'] = current_week
 
@@ -357,7 +357,7 @@ class RankTracker:
                 else:
                     logging.warning(f"Sentiment image file not found: {sentiment_image_filename}")
 
-                embed.set_footer(text=f"notif requested by {user.display_name}", icon_url=user.avatar.url if user.avatar else discord.Embed.Empty)
+                embed.set_footer(text=f"Notification requested by {user.display_name}, {formatted_now}.", icon_url=user.avatar.url if user.avatar else discord.Embed.Empty)
 
                 await user.send(files=[file_sentiment] if 'file_sentiment' in locals() else [], embed=embed)
                 logging.info(f"Notification sent to {user.display_name}, {formatted_now}.")
