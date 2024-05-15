@@ -218,6 +218,54 @@ class RankTracker:
 
             await asyncio.sleep(10)
 
+    async def check_notifications_interval(self):
+        logging.info("Starting to check notifs parameters.")
+        while True:
+            try:
+                now = datetime.now(timezone.utc)
+                offset = timedelta(hours=2)
+                now_local = now + offset
+                current_hour = now_local.strftime('%H:%M')
+                current_week = now.strftime('%U')
+
+                async with aiofiles.open('data/notifs.json', 'r') as f:
+                    data = await f.read()
+                    notifs = json.loads(data) if data else []
+
+                current_ranks = {
+                    'coinbase': await self.get_current_rank('coinbase'),
+                    'cwallet': await self.get_current_rank('wallet'),
+                    'binance': await self.get_current_rank('binance'),
+                    'cryptocom': await self.get_current_rank('cryptodotcom')
+                }
+
+                for notif in notifs:
+                    user_id = notif['user_id']
+                    app = notif['app_name']
+                    interval = notif['interval']
+                    hour = notif['hour']
+                    last_sent_week = notif.get('last_sent_week')
+
+                    if app in current_ranks and current_ranks[app]:
+                        current_rank = current_ranks[app]
+
+                        if interval == 'daily' and current_hour == hour:
+                            if not notif.get('last_sent_day') == now.strftime('%Y-%m-%d'):
+                                await self.send_notif(user_id, app, interval, hour, current_rank)
+                                notif['last_sent_day'] = now.strftime('%Y-%m-%d')
+                        elif interval == 'hebdo' and current_week != last_sent_week:
+                            await self.send_notif(user_id, app, interval, hour, current_rank)
+                            notif['last_sent_week'] = current_week
+
+                async with aiofiles.open('data/notifs.json', 'w') as f:
+                    await f.write(json.dumps(notifs, indent=4))
+
+                logging.info("Notification interval checking completed.")
+            except Exception as e:
+                logging.error(f"Failed to check notifs: {e}")
+
+            await asyncio.sleep(10)
+
     async def send_alert(self, user_id, app_name, rank):
         logging.info(f"Preparing to send alert for {app_name} to user {user_id}")
 
@@ -279,6 +327,47 @@ class RankTracker:
 
             logging.info("Bot status update loop completed one iteration.")
 
+    async def send_notif(self, user_id, app_name, interval, hour, rank):
+        logging.info(f"Preparing to send {interval} notif for {app_name} to user {user_id} at {hour}")
+        now = datetime.now()
+        formatted_now = now.strftime("%Y-%m-%d %H:%M:%S")
+
+        emoji_ids = {
+            "coinbase": "<:coinbase_icon:1234492789967032330>",
+            "cwallet": "<:wallet_icon:1234492792320036925>",
+            "binance": "<:binance_icon:1234492788616331295>",
+            "cryptocom": "<:cryptocom_icon:1234492791355080874>"
+        }
+
+        sentiment_text, sentiment_image_filename = await evaluate_sentiment()
+        average_sentiment_calculation = await weighted_average_sentiment_calculation()
+
+        try:
+            user = await self.bot.fetch_user(user_id)
+            if user:
+                embed = discord.Embed(title=f"📆🔔 {interval.capitalize()} notification for {app_name.capitalize()}!",
+                                      description=f"**{emoji_ids[app_name]} ``{app_name.capitalize()}``** current rank is **``{rank}``**.",
+                                      color=0x00ff00)
+                
+                embed.add_field(name="Current Market Sentiment:", value=f"Score: ``{average_sentiment_calculation}``\nFeeling: ``{sentiment_text}``\n", inline=False)
+                
+                if os.path.exists(f"assets/{sentiment_image_filename}"):
+                    file_sentiment = discord.File(f"assets/{sentiment_image_filename}", filename=sentiment_image_filename)
+                    embed.set_image(url=f"attachment://{sentiment_image_filename}")
+                else:
+                    logging.warning(f"Sentiment image file not found: {sentiment_image_filename}")
+
+                embed.set_footer(text=f"notif requested by {user.display_name}", icon_url=user.avatar.url if user.avatar else discord.Embed.Empty)
+
+                await user.send(files=[file_sentiment] if 'file_sentiment' in locals() else [], embed=embed)
+                logging.info(f"Notification sent to {user.display_name}, {formatted_now}.")
+            else:
+                logging.warning(f"User {user_id} not found.")
+        except discord.HTTPException as e:
+            logging.error(f"Failed to send message to {user_id}: {e}")
+        except Exception as e:
+            logging.error(f"An error occurred while sending an notif to {user_id}: {e}")
+
     async def run(self):
         while True:
             try:
@@ -286,6 +375,7 @@ class RankTracker:
                 await asyncio.gather(
                     self.track_rank(),
                     self.check_alerts(),
+                    self.check_notifications_interval(),
                     self.update_bot_status()
                 )
             except Exception as e:
@@ -293,6 +383,7 @@ class RankTracker:
 
             logging.info("Sleeping for 60 seconds.")
             await asyncio.sleep(60)
+
 if __name__ == "__main__":
     bot = commands.Bot(command_prefix='!', intents=discord.Intents.default())
     tracker = RankTracker(bot)
