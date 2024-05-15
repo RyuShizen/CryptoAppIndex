@@ -236,7 +236,76 @@ async def setup_commands(bot):
         except Exception as e:
             print(f"Failed to set or check alerts due to an error: {e}")
             await interaction.response.send_message("🚨 Failed to set alert due to an internal error.", ephemeral=True)
-    
+
+    @bot.tree.command(name="set_notification", description="Set an daily/hebdo notification for a specific crypto app rank")
+    @app_commands.describe(
+        interval="The interval to send notification for your specific crypto app (daily, hebdo)",
+        hour="The hour of the day to receive the notification (6h, 12h, 18h, 22h)"
+    )
+    @app_commands.choices(
+        app_name=[
+            app_commands.Choice(name="Coinbase", value="coinbase"),
+            app_commands.Choice(name="Coinbase wallet", value="cwallet"),
+            app_commands.Choice(name="Crypto.com", value="cryptocom"),
+            app_commands.Choice(name="Binance", value="binance")
+        ],
+        interval=[
+            app_commands.Choice(name="daily", value="daily"),
+            app_commands.Choice(name="hebdo", value="hebdo"),
+        ],
+        hour=[
+            app_commands.Choice(name="6 AM", value="6:00"),
+            app_commands.Choice(name="12 AM", value="12:00"),
+            app_commands.Choice(name="13 PM", value="13:00"),
+            app_commands.Choice(name="22 PM", value="22:00")
+        ]
+    )
+    async def set_notif_command(interaction: Interaction, app_name: str, interval: str, hour: str):
+        now = datetime.now()
+        current_week = now.strftime('%U')
+        notif_data = {
+            'user_id': interaction.user.id,
+            'app_name': app_name.lower(),
+            'interval': interval,
+            'hour': hour,
+            'week': current_week,
+            'last_sent_week': None,
+            'last_sent_day': None
+        }
+
+        os.makedirs('data', exist_ok=True)
+
+        try:
+            notifs = []
+            if os.path.exists('data/notifs.json'):
+                with open('data/notifs.json', 'r') as f:
+                    notifs = json.load(f)
+            
+            for existing_notif in notifs:
+                if (existing_notif['user_id'] == interaction.user.id and
+                    existing_notif['app_name'] == app_name.lower() and
+                    existing_notif['interval'] == interval and
+                    existing_notif['hour'] == hour):
+
+                    embed = Embed(description=f"❌ You already set a {interval} notification for {app_name} at {hour}h.", color=0xff0000)
+                    avatar_url = interaction.user.avatar.url if interaction.user.avatar else None
+                    embed.set_footer(text=f"Requested by {interaction.user.display_name}", icon_url=avatar_url if avatar_url else None)
+                    await interaction.response.send_message(embed=embed, ephemeral=True)
+                    return
+            
+            notifs.append(notif_data)
+            with open('data/notifs.json', 'w') as f:
+                json.dump(notifs, f, indent=4)
+
+            embed = Embed(description=f"✅📆🔔``{interval.capitalize()}`` notification set for ``{app_name}``performance at ``{hour}h``.", color=0x00ff00)
+            avatar_url = interaction.user.avatar.url if interaction.user.avatar else None
+            embed.set_footer(text=f"Requested by {interaction.user.display_name}", icon_url=avatar_url if avatar_url else None)
+            await interaction.response.send_message(embed=embed, ephemeral=False)
+
+        except Exception as e:
+            print(f"Failed to set or check notifs due to an error: {e}")
+            await interaction.response.send_message("🚨 Failed to set notif due to an internal error.", ephemeral=True)
+
     @bot.tree.command(name="remove_alert", description="Remove an existing alert for a specific app")
     @app_commands.describe(app_name="The name of the application to remove the alert for")
     async def remove_alert_command(interaction: Interaction, app_name: str):
@@ -355,7 +424,9 @@ async def setup_commands(bot):
         bitcoin_emoji = f"<:bitcoin:{bitcoin_emoji_id}>"
         bitcoin_price_text = f"``Current Bitcoin Price: 💲{bitcoin_price:,.2f} USD``" if bitcoin_price != "Unavailable" else f"{bitcoin_emoji} Bitcoin Price: Unavailable"
 
-        embed = Embed(title="Crypto App Ranks", description="Current and historical ranks of major crypto apps.", color=0x4ba1da)
+        embed = Embed(title="Crypto App Ranks", description="Current and historical ranks of major crypto apps on the App Store in Finance category.", color=0x4ba1da)
+        file_thumb = File("assets/Logo_App_Store.png", filename="app_store_logo.png")
+        embed.set_thumbnail(url="attachment://app_store_logo.png")
         embed.add_field(name=f"{bitcoin_emoji} Bitcoin Price", value=bitcoin_price_text, inline=False)
 
         apps = ["coinbase", "wallet", "binance", "cryptocom"]
@@ -380,25 +451,25 @@ async def setup_commands(bot):
             change_text = "No data"
             if isinstance(current_rank, int) and isinstance(yesterday_rank, int):
                 if current_rank < yesterday_rank:
-                    change_icon = "🔼+"
+                    change_icon = " 🔼 +"
                     change = yesterday_rank - current_rank
                 elif current_rank > yesterday_rank:
-                    change_icon = "🔻-"
+                    change_icon = " 🔻 -"
                     change = current_rank - yesterday_rank
                 else:
                     change_icon = ""
                     change = ""
-                change_text = f"{change_icon}{change}" if change_icon else "💤 No change"
+                change_text = f"{change_icon}{change}" if change_icon else " 💤 No change "
             else:
                 change_text = "Data unavailable"
 
             embed.add_field(
                 name=f"{emoji_ids[app]} {app.capitalize()} Rank",
-                value=f"``Current``: #️⃣{number_to_emoji(current_rank)} ({change_text}) | ``Yesterday``: #️⃣{number_to_emoji(yesterday_rank)} | ``Last Week``: #️⃣{number_to_emoji(last_week_rank)} | ``Last Month``: #️⃣{number_to_emoji(last_month_rank)}",
+                value=f"|``Current``: #️⃣{number_to_emoji(current_rank)} ({change_text} ) \n-| ``Yesterday``: #️⃣{number_to_emoji(yesterday_rank)} \n--| ``Last Week``: #️⃣{number_to_emoji(last_week_rank)} \n---| ``Last Month``: #️⃣{number_to_emoji(last_month_rank)}",
                 inline=False
             )
 
-        await interaction.response.send_message(embed=embed)
+        await interaction.response.send_message(files=[file_thumb], embed=embed)
 
     @bot.tree.command(name="maintenance", description="Toggle maintenance mode for the bot.")
     @app_commands.describe(mode="Enter 'on' to start maintenance or 'off' to end it.", reason="Reason for maintenance")
