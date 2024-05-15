@@ -59,10 +59,9 @@ async def get_bitcoin_price_usd():
     """Fetch the current price of Bitcoin in USD from the CoinGecko API asynchronously."""
     url = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=USD"
     try:
-        # Use aiohttp client session to make the HTTP request
         async with aiohttp.ClientSession() as session:
             async with session.get(url) as response:
-                response.raise_for_status()  # This will raise an aiohttp.ClientResponseError if the HTTP request returned an unsuccessful status code
+                response.raise_for_status()
                 data = await response.json()
                 bitcoin_price = data['bitcoin']['usd']
                 return bitcoin_price

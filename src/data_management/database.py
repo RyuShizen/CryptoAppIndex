@@ -25,7 +25,6 @@ class AppRankTracker:
             }
             last_saved_rank = None
 
-        # Update if the current rank is different from the last saved rank
         if last_saved_rank != rank_number:
             rank_number = int(rank_number)
             data['last_rank'] = rank_number
@@ -57,11 +56,11 @@ class AppRankTracker:
 
             for year, months in history.items():
                 if not isinstance(months, dict):
-                    continue  # Skip incorrect data entries
+                    continue
 
                 for month, days in months.items():
                     if not isinstance(days, dict):
-                        continue  # Skip incorrect data entries
+                        continue
 
                     for day, ranks in days.items():
                         for entry in ranks:

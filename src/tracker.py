@@ -57,7 +57,6 @@ class RankTracker:
         return await self.fetch_rank(self.url_cryptodotcom)
     
     async def fetch_all_ranks(self):
-        # Gather all ranks concurrently
         coinbase_rank, wallet_rank, binance_rank, cryptocom_rank = await asyncio.gather(
             self.fetch_coinbase_rank(),
             self.fetch_coinbase_wallet_rank(),
@@ -70,7 +69,6 @@ class RankTracker:
         now = datetime.now(timezone.utc)
         data_path = 'data/app_ranks.json'
         try:
-            # Async file operations
             if os.path.exists(data_path):
                 async with aiofiles.open(data_path, 'r') as file:
                     data = await file.read()
@@ -97,7 +95,7 @@ class RankTracker:
         if days_back:
             target_date = today - timedelta(days=days_back)
         elif months_back:
-            target_date = today - timedelta(days=30 * months_back)  # approximate month adjustment
+            target_date = today - timedelta(days=30 * months_back)
         else:
             return "Invalid or missing time parameter"
         
@@ -107,10 +105,9 @@ class RankTracker:
             async with aiofiles.open(file_path, 'r') as file:
                 data = await file.read()
                 data = json.loads(data)
-            # Fetch the last recorded rank for the target day
             day_data = data.get(year, {}).get(month, {}).get(day, [])
             if day_data:
-                return day_data[-1]['rank']  # return the last rank of the day
+                return day_data[-1]['rank']
             else:
                 return "No rank data available"
         except Exception as e:
@@ -165,7 +162,6 @@ class RankTracker:
     async def get_current_rank(self, app_name):
         file_path = 'data/app_ranks.json'
         try:
-            # Asynchronously open and read the file
             async with aiofiles.open(file_path, 'r') as file:
                 data = await file.read()
                 data = json.loads(data)
@@ -198,7 +194,6 @@ class RankTracker:
         logging.info("Starting to check alerts.")
         while True:
             try:
-                # Always re-read the alert conditions on each loop iteration
                 async with aiofiles.open('data/alerts.json', 'r') as f:
                     data = await f.read()
                     alerts = json.loads(data) if data else []
@@ -221,7 +216,7 @@ class RankTracker:
             except Exception as e:
                 logging.error(f"Failed to check alerts: {e}")
 
-            await asyncio.sleep(10)  # Adjust timing as necessary
+            await asyncio.sleep(10)
 
     async def send_alert(self, user_id, app_name, rank):
         logging.info(f"Preparing to send alert for {app_name} to user {user_id}")
@@ -238,7 +233,6 @@ class RankTracker:
                 
                 embed.add_field(name="Current Market Sentiment:", value=f"Score: ``{average_sentiment_calculation}``\nFeeling: ``{sentiment_text}``\n", inline=False)
                 
-                # Ensure the sentiment image file exists before attempting to send it
                 if os.path.exists(f"assets/{sentiment_image_filename}"):
                     file_sentiment = discord.File(f"assets/{sentiment_image_filename}", filename=sentiment_image_filename)
                     embed.set_image(url=f"attachment://{sentiment_image_filename}")
@@ -266,7 +260,7 @@ class RankTracker:
             ("crypto.com", self.url_cryptodotcom)
         ]
         status_index = 0
-        while True:  # This loop will continuously update the status
+        while True:
             app_name, url = app_urls[status_index]
             try:
                 rank = await self.fetch_rank(url)
@@ -279,10 +273,8 @@ class RankTracker:
             except Exception as e:
                 logging.error(f"Error fetching rank for {app_name}: {e}")
 
-            # Wait for some time before changing the status
-            await asyncio.sleep(10)  # Change status every 10 seconds
+            await asyncio.sleep(10)
 
-            # Move to the next app status or loop back to the start
             status_index = (status_index + 1) % len(app_urls)
 
             logging.info("Bot status update loop completed one iteration.")
@@ -299,9 +291,8 @@ class RankTracker:
             except Exception as e:
                 logging.error(f"An error occurred in the tracker loop: {e}")
 
-            logging.info("Sleeping for 10 seconds.")
-            await asyncio.sleep(10)  # Proper management of sleep to not block other operations
-
+            logging.info("Sleeping for 60 seconds.")
+            await asyncio.sleep(60)
 if __name__ == "__main__":
     bot = commands.Bot(command_prefix='!', intents=discord.Intents.default())
     tracker = RankTracker(bot)

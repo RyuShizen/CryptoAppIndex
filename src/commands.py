@@ -8,7 +8,6 @@ import logging
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Import your necessary modules here
 from api.apps import current_rank_coinbase, current_rank_wallet, current_rank_binance, current_rank_cryptodotcom, get_bitcoin_price_usd
 from utilities import number_to_emoji, evaluate_sentiment, weighted_average_sentiment_calculation
 from data_management.database import AppRankTracker
@@ -16,13 +15,11 @@ from tracker import RankTracker
 from data_management.guilds import load_guilds
 from config import discord_user_id
 
-# iInstances will become obsolete
 coinbase_tracker = AppRankTracker('Coinbase', 'data/rank_data_coinbase.json')
 wallet_tracker = AppRankTracker('Wallet', 'data/rank_data_wallet.json')
 binance_tracker = AppRankTracker('Binance', 'data/rank_data_binance.json')
 cryptodotcom_tracker = AppRankTracker('Crypto.com', 'data/rank_data_cryptodotcom.json')
 
-# New instances to fetch ranks
 ath_coinbase_tracker = AppRankTracker('coinbase', 'data/coinbase_rank_history.json')
 ath_wallet_tracker = AppRankTracker('wallet', 'data/wallet_rank_history.json')
 ath_binance_tracker = AppRankTracker('binance', 'data/binance_rank_history.json')
@@ -36,14 +33,12 @@ async def setup_commands(bot):
             description="One or more arguments are missing.",
             color=discord.Color.red()
         )
-        # Adjusted to remove the command prefix as slash commands don't use it
         embed.add_field(name="Format Correct", value="`/alert <app-name> <operator> <rank>`")
         if additional_info:
             embed.add_field(name="Error", value=additional_info)
         embed.add_field(name="Example", value="`/alert coinbase > 10`")
         avatar_url = interaction.user.avatar.url if interaction.user.avatar else None
         embed.set_footer(text=f"Requested by {interaction.user.display_name}", icon_url=avatar_url if avatar_url else discord.Embed.Empty)
-        # Use the response method appropriate for interactions
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
     async def send_error_message_remove_alert(interaction: discord.Interaction, additional_info=""):
@@ -52,14 +47,12 @@ async def setup_commands(bot):
             description="One or more arguments are missing.",
             color=discord.Color.red()
         )
-        # Adjusted to remove the command prefix as slash commands don't use it
         embed.add_field(name="Format Correct", value="`/remove_alert <app-name>`")
         if additional_info:
             embed.add_field(name="Error", value=additional_info)
         embed.add_field(name="Example", value="`/remove_alert coinbase`")
         avatar_url = interaction.user.avatar.url if interaction.user.avatar else None
         embed.set_footer(text=f"Requested by {interaction.user.display_name}", icon_url=avatar_url if avatar_url else discord.Embed.Empty)
-        # Use the response method appropriate for interactions
         await interaction.response.send_message(embed=embed, ephemeral=True)
 
     @bot.tree.command(name="coinbase", description="Get the current rank of the Coinbase app")
@@ -216,12 +209,10 @@ async def setup_commands(bot):
 
         try:
             alerts = []
-            # Check if file exists and read existing data
             if os.path.exists('data/alerts.json'):
                 with open('data/alerts.json', 'r') as f:
                     alerts = json.load(f)
             
-            # Check for duplicate alerts
             for existing_alert in alerts:
                 if (existing_alert['user_id'] == interaction.user.id and
                     existing_alert['app_name'] == app_name.lower() and
@@ -233,7 +224,6 @@ async def setup_commands(bot):
                     await interaction.response.send_message(embed=embed, ephemeral=True)
                     return
             
-            # Add the new alert if no duplicates
             alerts.append(alert_data)
             with open('data/alerts.json', 'w') as f:
                 json.dump(alerts, f, indent=4)
@@ -286,7 +276,7 @@ async def setup_commands(bot):
     @bot.tree.command(name="myalerts", description="Display your active alerts")
     async def myalerts_command(interaction: Interaction):
         user_id = interaction.user.id
-        alert_file_path = 'data/alerts.json'  # Ensure the path is correct
+        alert_file_path = 'data/alerts.json'
 
         try:
             with open(alert_file_path, 'r') as file:
@@ -303,7 +293,7 @@ async def setup_commands(bot):
                                     inline=False)
 
             embed.set_footer(text=f"Requested by {interaction.user.display_name}", icon_url=interaction.user.avatar.url if interaction.user.avatar else None)
-            await interaction.response.send_message(embed=embed, ephemeral=True)  # Make the message visible only to the user
+            await interaction.response.send_message(embed=embed, ephemeral=True)
 
         except FileNotFoundError:
             embed = Embed(description="🚨 Alert data file not found.", color=Colour.red())
@@ -322,12 +312,10 @@ async def setup_commands(bot):
     async def remove_all_alerts_command(interaction: Interaction):
         user_id = interaction.user.id
         try:
-            # Load the current alerts from the file
             if os.path.exists('data/alerts.json'):
                 with open('data/alerts.json', 'r') as file:
                     alerts = json.load(file)
                 
-                # Filter out alerts for the user to see if there are any
                 user_alerts = [alert for alert in alerts if alert['user_id'] == user_id]
 
                 if not user_alerts:
@@ -336,10 +324,8 @@ async def setup_commands(bot):
                     await interaction.response.send_message(embed=embed, ephemeral=True)
                     return
 
-                # Remove all alerts for this user
                 alerts = [alert for alert in alerts if alert['user_id'] != user_id]
 
-                # Write the updated alerts back to the file
                 with open('data/alerts.json', 'w') as file:
                     json.dump(alerts, file, indent=4)
                 
@@ -380,7 +366,6 @@ async def setup_commands(bot):
             "cryptocom": "<:cryptocom_icon:1234492791355080874>"
         }
 
-        # Fetch all ranks once to reduce repetitive calls
         logging.debug(f"Awaiting fetch_all_ranks")
         current_ranks = await rank_tracker.fetch_all_ranks()
 
@@ -392,17 +377,16 @@ async def setup_commands(bot):
 
             current_rank = current_ranks[idx] if current_ranks[idx] is not None else "Unavailable"
 
-            # Assuming yesterday_rank is an integer if it's not None
             change_text = "No data"
             if isinstance(current_rank, int) and isinstance(yesterday_rank, int):
                 if current_rank < yesterday_rank:
-                    change_icon = "🔼+"  # Rank improved
+                    change_icon = "🔼+"
                     change = yesterday_rank - current_rank
                 elif current_rank > yesterday_rank:
-                    change_icon = "🔻-"  # Rank worsened
+                    change_icon = "🔻-"
                     change = current_rank - yesterday_rank
                 else:
-                    change_icon = ""  # No change
+                    change_icon = ""
                     change = ""
                 change_text = f"{change_icon}{change}" if change_icon else "💤 No change"
             else:

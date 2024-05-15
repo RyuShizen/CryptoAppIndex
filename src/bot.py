@@ -41,13 +41,13 @@ class MyBot(commands.Bot):
         remove_guild(guild.id)
 
     async def setup_hook(self):
-        self.tracker = RankTracker(self)  # Initialize tracker here
-        self.loop.create_task(self.tracker.run())  # Start tracker as a background task
+        self.tracker = RankTracker(self)
+        self.loop.create_task(self.tracker.run())
         await self.tree.sync()
 
     async def on_ready(self):
         print(f'Logged in as {self.user.name}')
-        await self.tree.sync()  # Ensure commands are synced globally
+        await self.tree.sync()
 
     async def on_disconnect(self):
         print("Bot is disconnecting...")

@@ -8,37 +8,30 @@ def number_to_emoji(number):
     try:
         return ''.join(digit_to_emoji[digit] for digit in str(number) if digit.isdigit())
     except KeyError as e:
-        # If a KeyError occurs, it means 'number' contained a non-digit character
         print(f"Non-digit character encountered: {e}")
         return None
     except Exception as e:
-        # Catch any other exceptions that might occur
         print(f"An error occurred: {e}")
         return None
 
 async def evaluate_sentiment():
-    # Fetch the current ranks asynchronously
     coinbase_current_rank = await current_rank_coinbase()
     wallet_current_rank = await current_rank_wallet()
     binance_current_rank = await current_rank_binance()
     cryptodotcom_current_rank = await current_rank_cryptodotcom()
 
-    # Check if either rank is None
     if None in (coinbase_current_rank, wallet_current_rank, binance_current_rank, cryptodotcom_current_rank):
         print("Debug: One or both ranks are None.")
         return "No data available for sentiment analysis.", None
 
     try:
-        # Ensure ranks are integers for calculation
         coinbase_current_rank = int(coinbase_current_rank)
         wallet_current_rank = int(wallet_current_rank)
         binance_current_rank = int(binance_current_rank)
         cryptodotcom_current_rank = int(cryptodotcom_current_rank)
         
-        # Calculate weighted average
         weighted_average_rank = 100 - (5 * (coinbase_current_rank + cryptodotcom_current_rank) + 2.5 * binance_current_rank + wallet_current_rank) / 13.5
         
-        # Evaluate sentiment based on the weighted average
         sentiment, image_file = await evaluate_based_on_weighted_average(weighted_average_rank)
 
         return sentiment, image_file
