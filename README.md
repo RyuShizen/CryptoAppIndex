@@ -52,7 +52,7 @@ After integrating CryptoAppIndex onto your server, you can utilize the following
 
 Alerts Management: 
 
-- <code>/set_alert < app-name > < operator > < rank ></code> : Set alert with condition.
+- <code>/set_alert < app-name > < operator > < rank ></code> : Set alert with condition. You receive your alerts in private message when condition are triggered.
 - <code>/myalerts</code> : Display your current alerts.
 - <code>/remove_alert < app-name ></code> and <code>/remove_all_alerts</code> : Delete one or all alerts.
 
@@ -60,8 +60,8 @@ Periodic Notifications Management:
 
 <p align="center"><a href="https://ibb.co/rxnt3M5"><img src="https://i.ibb.co/Lx4Pr69/GNo-ML-2-WAAAMm-Je.png" alt="GNo-ML-2-WAAAMm-Je" border="0"></a></p>
 
-- <code>/set_notification < app-name > < interval > < hour ></code> : Set daily or weekly notification with "interval" condition at different time of the day with "hour" condition.
-- <code>/remove_all_alerts</code> Delete all notifications set.
+- <code>/set_notification < app-name > < interval > < hour ></code> : Set daily or weekly notification with "interval" condition at different time of the day with "hour" condition. You receive your notifications in private message
+- <code>/remove_all_notifications</code> Delete all notifications set.
 - <code>/myalerts</code> : Display your current notification(s).
 
 ## License
