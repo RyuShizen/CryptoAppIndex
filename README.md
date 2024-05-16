@@ -56,6 +56,14 @@ Alerts Management:
 - <code>/myalerts</code> : Display your current alerts.
 - <code>/remove_alert < app-name ></code> and <code>/remove_all_alerts</code> : Delete one or all alerts.
 
+Periodic Notifications Management: 
+
+<p align="center"><a href="https://ibb.co/rxnt3M5"><img src="https://i.ibb.co/Lx4Pr69/GNo-ML-2-WAAAMm-Je.png" alt="GNo-ML-2-WAAAMm-Je" border="0"></a></p>
+
+- <code>/set_notification < app-name > < interval > < hour ></code> : Set daily or weekly notification with "interval" condition at different time of the day with "hour" condition.
+- <code>/remove_all_alerts</code> Delete all notifications set.
+- <code>/myalerts</code> : Display your current notification(s).
+
 ## License
 
 CryptoAppIndex is distributed under the GNU General Public License v3.0. For more information, see the `LICENSE` file in the project repository.
