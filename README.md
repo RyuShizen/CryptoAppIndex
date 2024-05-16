@@ -60,8 +60,8 @@ Periodic Notifications Management:
 
 <p align="center"><a href="https://ibb.co/rxnt3M5"><img src="https://i.ibb.co/Lx4Pr69/GNo-ML-2-WAAAMm-Je.png" alt="GNo-ML-2-WAAAMm-Je" border="0"></a></p>
 
-- <code>/set_notification < app-name > < interval > < hour ></code> : Set daily or weekly notification with "interval" condition at different time of the day with "hour" condition. You receive your notifications in private message
-- <code>/remove_all_notifications</code> Delete all notifications set.
+- <code>/set_notification < app-name > < interval > < hour ></code> : Set daily or weekly notification with "interval" condition at different time of the day with "hour" condition. You receive your notifications in private message.
+- <code>/remove_all_notifications</code> : Delete all notifications set.
 - <code>/myalerts</code> : Display your current notification(s).
 
 ## License
