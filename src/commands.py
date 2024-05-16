@@ -297,7 +297,7 @@ async def setup_commands(bot):
             with open('data/notifs.json', 'w') as f:
                 json.dump(notifs, f, indent=4)
 
-            embed = Embed(description=f"✅📆🔔``{interval.capitalize()}`` notification set for ``{app_name}``performance at ``{hour}h``.", color=0x00ff00)
+            embed = Embed(description=f"✅📆🔔``{interval.capitalize()}`` notification set for ``{app_name} ``rank on the App Store at ``{hour}``.", color=0x00ff00)
             avatar_url = interaction.user.avatar.url if interaction.user.avatar else None
             embed.set_footer(text=f"Requested by {interaction.user.display_name}", icon_url=avatar_url if avatar_url else None)
             await interaction.response.send_message(embed=embed, ephemeral=False)
@@ -448,7 +448,7 @@ async def setup_commands(bot):
                 embed.set_footer(text=f"Requested by {interaction.user.display_name}", icon_url=interaction.user.avatar.url if interaction.user.avatar else None)
                 await interaction.response.send_message(embed=embed, ephemeral=True)
             else:
-                embed = Embed(description="🤷‍♂️ No notif file found or no notifs set.", color=Colour.blue())
+                embed = Embed(description="🤷‍♂️ No notification file found or no notif(s) set.", color=Colour.blue())
                 embed.set_footer(text=f"Requested by {interaction.user.display_name}", icon_url=interaction.user.avatar.url if interaction.user.avatar else None)
                 await interaction.response.send_message(embed=embed, ephemeral=True)
 
