@@ -9,7 +9,7 @@
 import discord
 import json
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from discord import app_commands, Interaction, File, Embed, Colour
 from discord.ext import commands
 import logging
@@ -27,11 +27,28 @@ coinbase_tracker = AppRankTracker('Coinbase', 'data/rank_data_coinbase.json')
 wallet_tracker = AppRankTracker('Wallet', 'data/rank_data_wallet.json')
 binance_tracker = AppRankTracker('Binance', 'data/rank_data_binance.json')
 cryptodotcom_tracker = AppRankTracker('Crypto.com', 'data/rank_data_cryptodotcom.json')
+app_rank_tracker = AppRankTracker(app_name="my_app", file_path="data/last_execution_time.json")
 
 ath_coinbase_tracker = AppRankTracker('coinbase', 'data/coinbase_rank_history.json')
 ath_wallet_tracker = AppRankTracker('wallet', 'data/wallet_rank_history.json')
 ath_binance_tracker = AppRankTracker('binance', 'data/binance_rank_history.json')
 ath_cryptodotcom_tracker = AppRankTracker('cryptocom', 'data/cryptocom_rank_history.json')
+
+async def limit_command(interaction: Interaction):
+    user_id = str(interaction.user.id)
+    last_execution_times = await app_rank_tracker.read_last_execution_times()
+    now = datetime.now()
+
+    if user_id in last_execution_times:
+        last_time = datetime.fromisoformat(last_execution_times[user_id])
+        if now - last_time < timedelta(minutes=1):
+            await interaction.response.send_message("❗ You can call command only once per minute. ❗", ephemeral=True)
+            return False
+
+    last_execution_times[user_id] = now.isoformat()
+    await app_rank_tracker.write_last_execution_times(last_execution_times)
+
+    return True
 
 async def setup_commands(bot):
 
@@ -65,10 +82,12 @@ async def setup_commands(bot):
 
     @bot.tree.command(name="coinbase", description="Get the current rank of the Coinbase app")
     async def coinbase_command(interaction: Interaction):
+        if not await limit_command(interaction):
+            return
         
+        now = datetime.now()
         average_sentiment_calculation = await weighted_average_sentiment_calculation()
         rank_number_coinbase = await current_rank_coinbase()
-        now = datetime.now()
         current_datetime_hour = now.strftime('%Y-%m-%d at %H:%M:%S')
 
         sentiment_text, sentiment_image_filename = await evaluate_sentiment()
@@ -95,10 +114,13 @@ async def setup_commands(bot):
 
     @bot.tree.command(name="cwallet", description="Get the current rank of the Coinbase Wallet app")
     async def cwallet_command(interaction: Interaction):
+        if not await limit_command(interaction):
+            return
+        
+        now = datetime.now()
 
         average_sentiment_calculation = await weighted_average_sentiment_calculation()
         rank_number_wallet = await current_rank_wallet()
-        now = datetime.now()
         current_datetime_hour = now.strftime('%Y-%m-%d at %H:%M:%S')
 
         sentiment_text, sentiment_image_filename = await evaluate_sentiment()
@@ -128,10 +150,12 @@ async def setup_commands(bot):
 
     @bot.tree.command(name="binance", description="Get the current rank of the Binance app")
     async def binance_command(interaction: Interaction):
-
+        if not await limit_command(interaction):
+            return
+        
+        now = datetime.now()
         average_sentiment_calculation = await weighted_average_sentiment_calculation()
         rank_number_binance = await current_rank_binance()
-        now = datetime.now()
         current_datetime_hour = now.strftime('%Y-%m-%d at %H:%M:%S')
 
         sentiment_text, sentiment_image_filename = await evaluate_sentiment()
@@ -158,10 +182,12 @@ async def setup_commands(bot):
 
     @bot.tree.command(name="cryptocom", description="Get the current rank of the Crypto.com app")
     async def cryptocom_command(interaction: Interaction):
-
+        if not await limit_command(interaction):
+            return
+        
+        now = datetime.now()
         average_sentiment_calculation = await weighted_average_sentiment_calculation()
         rank_number_cryptodotcom = await current_rank_cryptodotcom()
-        now = datetime.now()
         current_datetime_hour = now.strftime('%Y-%m-%d at %H:%M:%S')
 
         sentiment_text, sentiment_image_filename = await evaluate_sentiment()
@@ -222,11 +248,8 @@ async def setup_commands(bot):
                     alerts = json.load(f)
             
             for existing_alert in alerts:
-                if (existing_alert['user_id'] == interaction.user.id and
-                    existing_alert['app_name'] == app_name.lower() and
-                    existing_alert['operator'] == operator and
-                    existing_alert['rank'] == rank):
-                    embed = Embed(description=f"❌ Alert for ``{app_name}`` when rank ``{operator} {rank}`` already exists.", color=0xff0000)
+                if existing_alert['user_id'] == interaction.user.id:
+                    embed = Embed(description=f"❌ You have reached your maximum number of alerts. See your current alerts with the ``/myalerts`` command.", color=0xff0000)
                     avatar_url = interaction.user.avatar.url if interaction.user.avatar else None
                     embed.set_footer(text=f"Requested by {interaction.user.display_name}", icon_url=avatar_url if avatar_url else None)
                     await interaction.response.send_message(embed=embed, ephemeral=True)
@@ -290,12 +313,9 @@ async def setup_commands(bot):
                     notifs = json.load(f)
             
             for existing_notif in notifs:
-                if (existing_notif['user_id'] == interaction.user.id and
-                    existing_notif['app_name'] == app_name.lower() and
-                    existing_notif['interval'] == interval and
-                    existing_notif['hour'] == hour):
+                if existing_notif['user_id'] == interaction.user.id:
 
-                    embed = Embed(description=f"❌ You already set a {interval} notification for {app_name} at {hour}h.", color=0xff0000)
+                    embed = Embed(description=f"❌ You have reached your maximum number of notifications. See your current notifications with the ``/myalerts`` command.", color=0xff0000)
                     avatar_url = interaction.user.avatar.url if interaction.user.avatar else None
                     embed.set_footer(text=f"Requested by {interaction.user.display_name}", icon_url=avatar_url if avatar_url else None)
                     await interaction.response.send_message(embed=embed, ephemeral=True)
@@ -471,6 +491,9 @@ async def setup_commands(bot):
 
     @bot.tree.command(name="all_ranks", description="Display ranks and Data History of all crypto apps at once")
     async def all_ranks_command(interaction: Interaction):
+        if not await limit_command(interaction):
+            return
+        
         rank_tracker = RankTracker(bot)
 
         bitcoin_price = await get_bitcoin_price_usd()  
