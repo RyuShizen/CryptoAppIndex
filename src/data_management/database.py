@@ -9,6 +9,12 @@
 import json
 from datetime import datetime
 import aiofiles
+import os 
+
+DATA_DIR = 'data'
+LAST_EXECUTION_FILE = os.path.join(DATA_DIR, 'last_execution_time.json')
+
+os.makedirs(DATA_DIR, exist_ok=True)
 
 class AppRankTracker:
     def __init__(self, app_name, file_path):
@@ -130,3 +136,17 @@ class AppRankTracker:
             return f"``🔼 Increased by +{previous_rank - current_rank} position(s) since {last_date}``"
         else:
             return f"``🔻 Decreased by -{current_rank - previous_rank} position(s) since {last_date}``"
+
+    async def read_last_execution_times(self):
+        try:
+            async with aiofiles.open(self.file_path, 'r') as file:
+                content = await file.read()
+                return json.loads(content)
+        except FileNotFoundError:
+            return {}
+        except json.JSONDecodeError:
+            return {}
+
+    async def write_last_execution_times(self, times):
+        async with aiofiles.open(self.file_path, 'w') as file:
+            await file.write(json.dumps(times))
