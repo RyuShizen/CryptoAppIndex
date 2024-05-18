@@ -17,12 +17,19 @@ You can monitor these trends and set alerts for ranking changes, ensuring you ar
 
 ## Features
 
-- **Fetch Ranking**: Sends the current ranking of most popular crypto apps (Coinbase, Binance, Crypto.com) on the App Store with simple commands.
+- **Fetch Ranking**: Get the current ranking of most popular crypto apps (Coinbase, Binance, Crypto.com) on the App Store with simple commands direclty on Discord.
+
 - **Automatic Updates**: The bot fetches the most recent data with each command, ensuring the information is always up to date.
+
 - **Daily Monitoring**: Compare the current ranking with that of the day before and indicates the evolution.
+
 - **Market Sentiment**: Analyze the leaderboard to provide market sentiment using a weighted average of crypto apps' rankings. (Extreme Greed, Greed, Optimism, Doubt, etc.).
 - **Rank Records**: The bot tracks the highest and lowest ranks achieved by crypto apps and historical charts, providing a long-term perspective on their performance in the App Store.
-- **Alerts Commands**: You can set alert thresholds for your applications. Receive direct messages when the app's rank meets your specified conditions with !alert.
+
+- **Alerts Commands**: You can set alert thresholds for your applications. Receive direct messages when the app's rank meets your specified conditions.
+
+- **Notifications Commands**: You can set notification and receive daily or weekly updates on the App Store ranking of a specified crypto app, along with the current market sentiment.
+
 - **Live Status Updates**: The bot continuously updates its status to show the current ranks of tracked applications, providing real-time insights directly in its Discord status.
 
 <p align="center">
