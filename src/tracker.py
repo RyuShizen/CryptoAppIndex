@@ -198,6 +198,21 @@ class RankTracker:
             logging.error(f"Unsupported operator {operator}")
             return False
 
+    async def remove_alert(self, user_id, app_name):
+        try:
+            async with aiofiles.open('data/alerts.json', 'r+') as f:
+                data = await f.read()
+                alerts = json.loads(data) if data else []
+
+                alerts = [alert for alert in alerts if not (alert['user_id'] == user_id and alert['app_name'] == app_name)]
+
+                await f.seek(0)
+                await f.write(json.dumps(alerts, indent=4))
+                await f.truncate()
+
+        except Exception as e:
+            logging.error(f"Failed to remove alert: {e}")
+
     async def check_alerts(self):
         logging.info("Starting to check alerts.")
         while True:
@@ -219,6 +234,9 @@ class RankTracker:
                     current_rank = current_ranks.get(app, None)
                     if current_rank and self.evaluate_condition(current_rank, alert['operator'], alert['rank']):
                         await self.send_alert(user_id, app, current_rank)
+                        await asyncio.sleep(3)
+                        await self.remove_alert(user_id, app)
+
 
                 logging.info("Alert checking completed.")
             except Exception as e:
@@ -284,8 +302,8 @@ class RankTracker:
             user = await self.bot.fetch_user(user_id)
             if user:
                 embed = discord.Embed(title=f"📢🔔 Alert for {app_name.capitalize()}!",
-                                      description=f"The rank condition for **``{app_name.capitalize()}``** has been met! Current rank is **``{rank}``**.",
-                                      color=0x00ff00)
+                                    description=f"The rank condition for **``{app_name.capitalize()}``** has been met! Current rank is **``{rank}``**.",
+                                    color=0x00ff00)
                 
                 embed.add_field(name="Current Market Sentiment:", value=f"Score: ``{average_sentiment_calculation}``\nFeeling: ``{sentiment_text}``\n", inline=False)
                 
@@ -295,7 +313,8 @@ class RankTracker:
                 else:
                     logging.warning(f"Sentiment image file not found: {sentiment_image_filename}")
 
-                embed.set_footer(text=f"Alert requested by {user.display_name}", icon_url=user.avatar.url if user.avatar else discord.Embed.Empty)
+                avatar_url = user.avatar.url if user.avatar else None
+                embed.set_footer(text=f"Alert requested by {user.display_name}", icon_url=avatar_url)
 
                 await user.send(files=[file_sentiment] if 'file_sentiment' in locals() else [], embed=embed)
                 logging.info(f"Alert sent to {user.display_name}")
@@ -354,8 +373,8 @@ class RankTracker:
             user = await self.bot.fetch_user(user_id)
             if user:
                 embed = discord.Embed(title=f"📆🔔 {interval.capitalize()} notification for {app_name.capitalize()}!",
-                                      description=f"**{emoji_ids[app_name]} ``{app_name.capitalize()}``** current rank is **``{rank}``**.",
-                                      color=0x00ff00)
+                                    description=f"**{emoji_ids[app_name]} ``{app_name.capitalize()}``** current rank is **``{rank}``**.",
+                                    color=0x00ff00)
                 
                 embed.add_field(name="Current Market Sentiment:", value=f"Score: ``{average_sentiment_calculation}``\nFeeling: ``{sentiment_text}``\n", inline=False)
                 
@@ -365,7 +384,8 @@ class RankTracker:
                 else:
                     logging.warning(f"Sentiment image file not found: {sentiment_image_filename}")
 
-                embed.set_footer(text=f"Notification requested by {user.display_name}, {formatted_now}.", icon_url=user.avatar.url if user.avatar else discord.Embed.Empty)
+                avatar_url = user.avatar.url if user.avatar else None
+                embed.set_footer(text=f"Notification requested by {user.display_name}, {formatted_now}.", icon_url=avatar_url)
 
                 await user.send(files=[file_sentiment] if 'file_sentiment' in locals() else [], embed=embed)
                 logging.info(f"Notification sent to {user.display_name}, {formatted_now}.")
@@ -374,7 +394,7 @@ class RankTracker:
         except discord.HTTPException as e:
             logging.error(f"Failed to send message to {user_id}: {e}")
         except Exception as e:
-            logging.error(f"An error occurred while sending an notif to {user_id}: {e}")
+            logging.error(f"An error occurred while sending a notif to {user_id}: {e}")
 
     async def run(self):
         while True:
