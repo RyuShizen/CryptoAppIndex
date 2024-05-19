@@ -51,11 +51,11 @@ After integrating CryptoAppIndex onto your server, you can utilize the following
 - Use <code>/binance</code> to retrieve the current ranking and all-time highest achieved rank of the Binance app.
 - Use <code>/cryptocom</code> to retrieve the current ranking and all-time highest achieved rank of the Crypto.com app.
 
-<p align="center"><a href="https://imgbb.com/"><img src="https://i.ibb.co/Yty3qPN/c.png" alt="coinbase_command" border="0"></a></p>
+<p align="center"><a href="https://ibb.co/HCqyR56"><img src="https://i.ibb.co/f9HWZjf/coinbase.png" alt="coinbase" border="0"></a></p>
   
 - <code>/all_ranks</code> : Provides a comprehensive view of all the current crypto app rankings, historical data for all monitored crypto apps, and the current Bitcoin price with a single command.
 
-<p align="center"><a href="https://imgbb.com/"><img src="https://i.ibb.co/6yK3XQZ/r.png" alt="ranks_command" border="0"></a></p>
+<p align="center"><a href="https://ibb.co/tm3HPgm"><img src="https://i.ibb.co/xC328WC/all-ranks.png" alt="all-ranks" border="0"></a></p>
 
 Alerts Management: 
 
@@ -65,7 +65,7 @@ Alerts Management:
 
 Periodic Notifications Management: 
 
-<p align="center"><a href="https://ibb.co/rxnt3M5"><img src="https://i.ibb.co/Lx4Pr69/GNo-ML-2-WAAAMm-Je.png" alt="GNo-ML-2-WAAAMm-Je" border="0"></a></p>
+<p align="center"><a href="https://ibb.co/860Jxp4"><img src="https://i.ibb.co/xJDyg08/notification-discord-cryptoappindex-merch.gif" alt="notification-discord-cryptoappindex-merch" border="0"></a></p>
 
 - <code>/set_notification < app-name > < interval > < hour ></code> : Set daily or weekly notification with "interval" condition at different time of the day with "hour" condition. You receive your notifications in private message.
 - <code>/remove_all_notifications</code> : Delete all notifications set.
