@@ -42,34 +42,11 @@ Click on the invitation below:
 
 <a href="https://discord.com/oauth2/authorize?client_id=1217919790593872015"><img src="https://img.shields.io/badge/Discord-Invitation-7289DA?style=for-the-badge&logo=discord&logoColor=white" alt="Discord - Invitation"></a>
 
-## Usage
+## Documentation
 
-After integrating CryptoAppIndex onto your server, you can utilize the following commands to access the current rankings of various crypto apps and the global market sentiment using a weighted average:
+To read documentation, click on the link below:
 
-- Use <code>/coinbase</code> to retrieve the current ranking and all-time highest achieved rank of the Coinbase app.
-- Use <code>/cwallet</code> to retrieve the current ranking and all-time highest achieved rank of Coinbase's Wallet app.
-- Use <code>/binance</code> to retrieve the current ranking and all-time highest achieved rank of the Binance app.
-- Use <code>/cryptocom</code> to retrieve the current ranking and all-time highest achieved rank of the Crypto.com app.
-
-<p align="center">  <a href="https://ibb.co/HhYydW8"><img src="https://i.ibb.co/9Z20tF5/coinbase.png" alt="coinbase" border="0"></a></p>
-
-- <code>/all_ranks</code> : Provides a comprehensive view of all the current crypto app rankings, historical data for all monitored crypto apps, and the current Bitcoin price with a single command.
-
-<p align="center"><a href="https://ibb.co/Xjf1v1s"><img src="https://i.ibb.co/TYD6F68/all-ranks.png" alt="all-ranks" border="0"></a></p>
-
-Alerts Management: 
-
-- <code>/set_alert < app-name > < operator > < rank ></code> : Set alert with condition. You receive your alerts in private message when condition are triggered.
-- <code>/myalerts</code> : Display your current alerts.
-- <code>/remove_alert < app-name ></code> and <code>/remove_all_alerts</code> : Delete one or all alerts.
-
-Periodic Notifications Management: 
-
-<p align="center"><a href="https://ibb.co/090vbt2"><img src="https://i.ibb.co/DMBT2pW/notif.png" alt="notif" border="0"></a></p>
-
-- <code>/set_notification < app-name > < interval > < hour ></code> : Set daily or weekly notification with "interval" condition at different time of the day with "hour" condition. You receive your notifications in private message.
-- <code>/remove_all_notifications</code> : Delete all notifications set.
-- <code>/myalerts</code> : Display your current notification(s).
+<a href="https://cryptoappindex-documentation.gitbook.io/"><img src="https://img.shields.io/badge/View-Documentation-blue?style=for-the-badge" alt="View - Documentation"></a>
 
 ## License
 
