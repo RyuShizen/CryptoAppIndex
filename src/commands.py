@@ -212,7 +212,7 @@ async def setup_commands(bot):
         await cryptodotcom_tracker.save_rank(rank_number_cryptodotcom)
         await interaction.response.send_message(files=[file_thumb, file_sentiment], embed=embed)
 
-    @bot.tree.command(name="set_alert", description="Set an alert to be notified when a specific crypto app reaches a designated rank.")
+    @bot.tree.command(name="set-alert", description="Set an alert to be notified when a specific crypto app reaches a designated rank.")
     @app_commands.describe(
         operator="The comparison operator for the alert (e.g., >, <, >=, <=)",
         rank="The rank threshold for the alert"
@@ -268,7 +268,7 @@ async def setup_commands(bot):
             print(f"Failed to set or check alerts due to an error: {e}")
             await interaction.response.send_message("🚨 Failed to set alert due to an internal error.", ephemeral=True)
 
-    @bot.tree.command(name="set_notification", description="Receive daily or weekly updates on the position of a specific crypto app on the App Store.")
+    @bot.tree.command(name="set-notification", description="Receive daily or weekly updates on the position of a specific crypto app on the App Store.")
     @app_commands.describe(
     interval = "The interval to send notifications for your specific crypto app (daily, weekly)",
     hour = "The hour of the day to receive the notification (6 AM, 12 PM, 6 PM, 10 PM)"
@@ -334,7 +334,7 @@ async def setup_commands(bot):
             print(f"Failed to set or check notifs due to an error: {e}")
             await interaction.response.send_message("🚨 Failed to set notif due to an internal error.", ephemeral=True)
 
-    @bot.tree.command(name="remove_alert", description="Remove an existing alert for a specific app")
+    @bot.tree.command(name="remove-alert", description="Remove an existing alert for a specific app")
     @app_commands.describe(app_name="The name of the application to remove the alert for")
     async def remove_alert_command(interaction: Interaction, app_name: str):
         if app_name is None:
@@ -413,7 +413,7 @@ async def setup_commands(bot):
             embed.set_footer(text=f"Requested by {interaction.user.display_name}", icon_url=interaction.user.avatar.url if interaction.user.avatar else None)
             await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @bot.tree.command(name="remove_all_alerts", description="Remove all your set alerts")
+    @bot.tree.command(name="remove-all-alerts", description="Remove all your set alerts")
     async def remove_all_alerts_command(interaction: Interaction):
         user_id = interaction.user.id
         try:
@@ -451,7 +451,7 @@ async def setup_commands(bot):
             embed.set_footer(text=f"Requested by {interaction.user.display_name}", icon_url=interaction.user.avatar.url if interaction.user.avatar else None)
             await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @bot.tree.command(name="remove_all_notifications", description="Remove all your set notifications")
+    @bot.tree.command(name="remove-all-notifications", description="Remove all your set notifications")
     async def remove_all_notifications_command(interaction: Interaction):
         user_id = interaction.user.id
         try:
@@ -489,7 +489,7 @@ async def setup_commands(bot):
             embed.set_footer(text=f"Requested by {interaction.user.display_name}", icon_url=interaction.user.avatar.url if interaction.user.avatar else None)
             await interaction.response.send_message(embed=embed, ephemeral=True)
 
-    @bot.tree.command(name="all_ranks", description="Display ranks and Data History of all crypto apps at once")
+    @bot.tree.command(name="ranking-data", description="Display ranks and Data History of all crypto apps at once")
     async def all_ranks_command(interaction: Interaction):
         if not await limit_command(interaction):
             return
@@ -548,6 +548,43 @@ async def setup_commands(bot):
 
         await interaction.response.send_message(files=[file_thumb], embed=embed)
 
+    @bot.tree.command(name="chart", description="Get a chart for a specific app over a specified time range.")
+    @app_commands.choices(
+        app_name=[
+            app_commands.Choice(name="Binance", value="binance"),
+            app_commands.Choice(name="Coinbase", value="coinbase"),
+            app_commands.Choice(name="Crypto.com", value="crypto.com"),
+            app_commands.Choice(name="Wallet", value="wallet"),
+        ],
+        duration=[
+            app_commands.Choice(name="7 days", value="7_days"),
+            app_commands.Choice(name="1 month", value="1_month"),
+            app_commands.Choice(name="3 months", value="3_months"),
+            app_commands.Choice(name="6 months", value="6_months"),
+            app_commands.Choice(name="1 year", value="1_year"),
+        ]
+    )
+    async def chart(interaction: Interaction, app_name: str, duration: str):
+        if not await limit_command(interaction):
+            return
+        # Construct the file path
+        file_path = os.path.join('data', f'{app_name.lower()}_btc_data_{duration}.png')
+
+        # Check if the file exists
+        if os.path.exists(file_path):
+            # Create an embed
+            embed = discord.Embed(title=f'{app_name.capitalize()} Chart for {duration.replace("_", "")}',
+                                  description=f'Here is the chart for ``{app_name.capitalize()}`` correlated to BTC over the past ``{duration.replace("_", "")}``.',
+                                  color=discord.Color.blue())
+            # Attach the file
+            file = File(file_path, filename=os.path.basename(file_path))
+            embed.set_image(url=f"attachment://{os.path.basename(file_path)}")
+
+            # Send the embed with the attached file
+            await interaction.response.send_message(embed=embed, file=file)
+        else:
+            await interaction.response.send_message(f"Sorry, I couldn't find the chart for {app_name.capitalize()} over the past {duration}.", ephemeral=True)
+    
     @bot.tree.command(name="maintenance", description="Toggle maintenance mode for the bot.")
     @app_commands.describe(mode="Enter 'on' to start maintenance or 'off' to end it.", reason="Reason for maintenance")
     @app_commands.choices(mode=[
