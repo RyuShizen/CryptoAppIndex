@@ -10,7 +10,8 @@ import discord
 import json
 import os
 from datetime import datetime, timedelta
-from discord import app_commands, Interaction, File, Embed, Colour
+from discord import app_commands, Interaction, File, Embed, Colour, ButtonStyle
+from discord.ui import View, Button
 from discord.ext import commands
 import logging
 
@@ -41,8 +42,8 @@ async def limit_command(interaction: Interaction):
 
     if user_id in last_execution_times:
         last_time = datetime.fromisoformat(last_execution_times[user_id])
-        if now - last_time < timedelta(minutes=1):
-            await interaction.response.send_message("❗ You can call command only once per minute. ❗", ephemeral=True)
+        if now - last_time < timedelta(seconds=10):
+            await interaction.response.send_message("❗ Avoid spamming commands, wait 10 seconds before trying again. ❗", ephemeral=True)
             return False
 
     last_execution_times[user_id] = now.isoformat()
@@ -567,24 +568,41 @@ async def setup_commands(bot):
     async def chart(interaction: Interaction, app_name: str, duration: str):
         if not await limit_command(interaction):
             return
-        # Construct the file path
+
+        # Mapping app names to their logo paths
+        app_logos = {
+            "binance": "assets/binance-smart-chain-bsc-seeklogo.png",
+            "coinbase": "assets/coinbase-coin-seeklogo.png",
+            "crypto.com": "assets/crypto-com-seeklogo.png",
+            "wallet": "assets/coinbase-wallet-seeklogo.png"
+        }
+
+        # Construct the file path for the chart image
         file_path = os.path.join('data', f'{app_name.lower()}_btc_data_{duration}.png')
 
         # Check if the file exists
         if os.path.exists(file_path):
             # Create an embed
-            embed = discord.Embed(title=f'{app_name.capitalize()} Chart for {duration.replace("_", "")}',
-                                  description=f'Here is the chart for ``{app_name.capitalize()}`` correlated to BTC over the past ``{duration.replace("_", "")}``.',
-                                  color=discord.Color.blue())
-            # Attach the file
+            embed = Embed(
+                title=f'{app_name.capitalize()} Chart for {duration.replace("_", " ")}',
+                description=f'Here is the chart for ``{app_name.capitalize()}`` correlated to BTC over the past ``{duration.replace("_", " ")}``.',
+                color=0x3498db
+            )
+            # Attach the file for the chart
             file = File(file_path, filename=os.path.basename(file_path))
             embed.set_image(url=f"attachment://{os.path.basename(file_path)}")
 
-            # Send the embed with the attached file
-            await interaction.response.send_message(embed=embed, file=file)
+            # Attach the thumbnail for the app logo
+            if app_name in app_logos:
+                app_logo_path = app_logos[app_name]
+                app_logo_file = File(app_logo_path, filename=os.path.basename(app_logo_path))
+                embed.set_thumbnail(url=f"attachment://{os.path.basename(app_logo_path)}")
+                await interaction.response.send_message(files=[file, app_logo_file], embed=embed)
+            else:
+                await interaction.response.send_message(files=[file], embed=embed)
         else:
-            await interaction.response.send_message(f"Sorry, I couldn't find the chart for {app_name.capitalize()} over the past {duration}.", ephemeral=True)
-    
+            await interaction.response.send_message(f"Sorry, I couldn't find the chart for {app_name.capitalize()} over the past {duration.replace('_', ' ')}.", ephemeral=True)
+
     @bot.tree.command(name="maintenance", description="Toggle maintenance mode for the bot.")
     @app_commands.describe(mode="Enter 'on' to start maintenance or 'off' to end it.", reason="Reason for maintenance")
     @app_commands.choices(mode=[
@@ -621,3 +639,39 @@ async def setup_commands(bot):
                             break
                 if target_channel:
                     await target_channel.send(embed=embed)
+
+    @bot.tree.command(name="about", description="Information about the CryptoAppIndex bot")
+    async def about_command(interaction: Interaction):
+        if not await limit_command(interaction):
+            return
+        
+        now = datetime.now()
+        current_datetime_hour = now.strftime('%Y-%m-%d at %H:%M:%S')
+
+        embed = Embed(
+            title="#️⃣ About CryptoAppIndex",
+            description=("Crypto App Index is a dedicated Discord bot designed to provide real-time rankings of crypto apps, "
+                        "cryptocurrency popularity, historical position charts, market sentiment, and instant alerts on Discord "
+                        "for any changes in rankings, ensures you never miss a trading opportunity!"),
+            color=0x3498db
+        )
+
+        file_thumb = File("assets/CryptoAppRank_Logo.png", filename="cryptoappindex_logo.png")
+        embed.set_thumbnail(url="attachment://cryptoappindex_logo.png")
+        
+        embed.add_field(name="📖 /Commands", value="To take view a list of my commands, type ``/`` and look at the popup. Alternatively, you can visit our [Documentation](https://cryptoappindex-documentation.gitbook.io/cryptoappindex-documentation).", inline=False)
+        embed.add_field(name="🌐 Website", value="[CryptoAppIndex Website](https://www.cryptoappindex.xyz/)", inline=True)
+        embed.add_field(name="📊 Dashboard", value="[CryptoAppIndex Dashboard](https://appcharts.cryptoappindex.xyz/)", inline=True)
+        embed.add_field(name="📲 X", value="[Follow us on X](https://x.com/CryptoAppIndex)", inline=True)
+        embed.add_field(name="📧 Contact", value="For bugs or feedback, email us at: ``contact@cryptoappindex.xyz``", inline=False)
+        embed.add_field(name="👨‍💻 Developed with 💙 by:", value="[SeedSnake](https://github.com/SeedSnake/CryptoAppIndex)", inline=True)
+        embed.set_footer(text=f"Information requested by {interaction.user.display_name}, {current_datetime_hour}.",
+                        icon_url=interaction.user.avatar.url if interaction.user.avatar else None)
+
+        view = View()
+        donate_button = Button(label="Donate in Bitcoin ❤", url="https://www.blockchain.com/explorer/addresses/btc/bc1qu55rjs86plmdfcrett6g8yke2tfxywqxhmluh5", style=ButtonStyle.link)
+        vote_button = Button(label="Vote for our bot 🥇 (available soon)", url="https://top.gg/", style=ButtonStyle.link)
+        view.add_item(donate_button)
+        view.add_item(vote_button)
+
+        await interaction.response.send_message(files=[file_thumb], embed=embed, view=view)
