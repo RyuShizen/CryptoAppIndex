@@ -18,7 +18,7 @@ You can monitor these trends and set alerts for ranking changes, ensuring you ar
 ## Features
 
 <p align="center">
-<a href="https://ibb.co/0qRTQnp"><img src="https://i.ibb.co/gyLN6rb/MOCKUP-CRPTOAPPINDEX.png" alt="MOCKUP-CRPTOAPPINDEX" border="0"></a>
+<a href="https://ibb.co/NLsnR70"><img src="https://i.ibb.co/RC9487X/MOCKUP-CRPTOAPPINDEX.png" alt="MOCKUP-CRPTOAPPINDEX" border="0"></a>
 </p>
 
 - **Fetch Ranking**: Get the current ranking of most popular crypto apps (Coinbase, Binance, Crypto.com) on the App Store with simple commands direclty on Discord.
