@@ -4,7 +4,7 @@
 <a href="https://imgbb.com/"><img src="https://i.ibb.co/4sLW3yM/Crypto-App-Index-Logo2.png" alt="Crypto-App-Index-Logo2" border="0"></a>
 </p>
 
-CryptoAppIndex is a Discord bot designed to provide real-time ranking of crypto apps on the App Store directly within your Discord server. 
+CryptoAppIndex is a Discord App designed to provide real-time ranking of crypto apps on the App Store directly within your Discord server. 
 By using a simple command, users can quickly get up-to-date information about Crypto's apps popularity, live positional change, ranks data history, and market sentiment.
 
 When crypto apps rank among the most downloaded, it may signal significant market greed!
@@ -21,12 +21,13 @@ You can monitor these trends and set alerts for ranking changes, ensuring you ar
 
 - **Fetch Ranking**: Get the current ranking of most popular crypto apps (Coinbase, Binance, Crypto.com) on the App Store with simple commands direclty on Discord.
 
-- **Automatic Updates**: The bot fetches the most recent data with each command, ensuring the information is always up to date.
+- **Automatic Updates**: The App fetches the most recent data with each command, ensuring the information is always up to date.
 
 - **Daily Monitoring**: Compare the current ranking with that of the day before and indicates the evolution.
 
 - **Market Sentiment**: Analyze the leaderboard to provide market sentiment using a weighted average of crypto apps' rankings. (Extreme Greed, Greed, Optimism, Doubt, etc.).
-- **Rank Records**: The bot tracks the highest and lowest ranks achieved by crypto apps and historical charts, providing a long-term perspective on their performance in the App Store.
+
+- **Rank Records**: The App tracks the highest and lowest ranks achieved by crypto apps and historical charts, providing a long-term perspective on their performance in the App Store.
 
 - **Alerts Commands**: You can set alert thresholds for your applications. Receive direct messages when the app's rank meets your specified conditions.
 
@@ -34,7 +35,7 @@ You can monitor these trends and set alerts for ranking changes, ensuring you ar
 
 - **Chart Command**: Get an insightful graph and visualize the performance of your favorite apps alongside Bitcoin's price fluctuations with /chart command..
 
-- **Live Status Updates**: The bot continuously updates its status to show the current ranks of tracked applications, providing real-time insights directly in its Discord status.
+- **Live Status Updates**: CryptoAppIndex continuously updates its status to show the current ranks of tracked applications, providing real-time insights directly in its Discord status.
 
 ## Installation
 
@@ -54,6 +55,6 @@ CryptoAppIndex is distributed under the GNU General Public License v3.0. For mor
 
 ## Legal Information
 
-CryptoAppIndex is designed solely to retrieve and display the ranking information of specific applications such as Coinbase, Binance, Crypto.com, and Coinbase Wallet from publicly accessible sources. The data provided by this bot is for informational purposes only and should not be interpreted as an endorsement or reflection of the views of the applications concerned or any affiliated platforms, including the App Store. 
+CryptoAppIndex is designed solely to retrieve and display the ranking information of specific applications such as Coinbase, Binance, Crypto.com, and Coinbase Wallet from publicly accessible sources. The data provided by this App is for informational purposes only and should not be interpreted as an endorsement or reflection of the views of the applications concerned or any affiliated platforms, including the App Store. 
 
-Users are advised that all interpretations and actions based on the bot's data are at their own discretion and risk. Importantly, this bot does not provide investment advice, nor should its output be used as a basis for making investment decisions.
+Users are advised that all interpretations and actions based on the App's data are at their own discretion and risk. Importantly, this App does not provide investment advice, nor should its output be used as a basis for making investment decisions.
