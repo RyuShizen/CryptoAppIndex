@@ -10,7 +10,7 @@ By using a simple command, users can quickly get up-to-date information about Cr
 When crypto apps rank among the most downloaded, it may signal significant market greed!
 You can monitor these trends and set alerts for ranking changes, ensuring you are always informed about potential market opportunities.
 
-<a href="https://github.com/SeedSnake/CryptoAppIndex/releases/"><img src="https://img.shields.io/github/tag/SeedSnake/CryptoAppIndex?include_prereleases=&sort=semver&color=blue" alt="GitHub tag"></a> <a href="#license"><img src="https://img.shields.io/badge/License-GNU-blue" alt="License"></a> <img src="https://img.shields.io/badge/maintained-yes-blue" alt="maintained - yes">
+<a href="https://github.com/SeedSnake/CryptoAppIndex/releases/"><img src="https://img.shields.io/github/tag/SeedSnake/CryptoAppIndex?include_prereleases=&sort=semver&color=blue" alt="GitHub tag"></a> <a href="#license"><img src="https://img.shields.io/badge/License-GNU-blue" alt="License"></a> <img src="https://img.shields.io/badge/maintained-yes-blue" alt="maintained - no">
 
 
 ## Features
