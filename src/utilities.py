@@ -1,10 +1,11 @@
 #                     GNU GENERAL PUBLIC LICENSE
-#                        Version 3, 29 June 2007
-#                     SeedSnake | CryptoAppIndex
+#                               Version 3
+#                     RyuShizen | CryptoAppIndex
 
-#  Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
+#  Copyright (C) 2024 Free Software Foundation, Inc. <https://fsf.org/>
 #  Everyone is permitted to copy and distribute verbatim copies
 #  of this license document, but changing it is not allowed.
+
 
 from api.apps import current_rank_binance, current_rank_coinbase, current_rank_cryptodotcom, current_rank_wallet
 

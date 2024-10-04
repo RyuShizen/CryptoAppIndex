@@ -3,6 +3,7 @@
 <p align="center">
 <a href="https://imgbb.com/"><img src="https://i.ibb.co/4sLW3yM/Crypto-App-Index-Logo2.png" alt="Crypto-App-Index-Logo2" border="0"></a>
 </p>
+**📢 The App is no more maintained, for me info contact me on X @CryptoAppIndex**
 
 CryptoAppIndex is a Discord App designed to provide real-time ranking of crypto apps on the App Store directly within your Discord server. 
 By using a simple command, users can quickly get up-to-date information about Crypto's apps popularity, live positional change, ranks data history, and market sentiment.
@@ -16,7 +17,7 @@ You can monitor these trends and set alerts for ranking changes, ensuring you ar
 ## Features
 
 <p align="center">
-<a href="https://ibb.co/NLsnR70"><img src="https://i.ibb.co/RC9487X/MOCKUP-CRPTOAPPINDEX.png" alt="MOCKUP-CRPTOAPPINDEX" border="0"></a>
+<a href="https://ibb.co/x2mrjKt"><img src="https://i.ibb.co/mRvPqrV/MOCKUP-CRPTOAPPINDEX.png" alt="MOCKUP-CRPTOAPPINDEX" border="0"></a>
 </p>
 
 - **Fetch Ranking**: Get the current ranking of most popular crypto apps (Coinbase, Binance, Crypto.com) on the App Store with simple commands direclty on Discord.
@@ -33,7 +34,7 @@ You can monitor these trends and set alerts for ranking changes, ensuring you ar
 
 - **Notifications Commands**: You can set notification and receive daily or weekly updates on the App Store ranking of a specified crypto app, along with the current market sentiment.
 
-- **Chart Command**: Get an insightful graph and visualize the performance of your favorite apps alongside Bitcoin's price fluctuations with /chart command..
+- **Chart Command**: Get an insightful graph and visualize the performance of your favorite apps alongside Bitcoin's price fluctuations with /chart command.
 
 - **Live Status Updates**: CryptoAppIndex continuously updates its status to show the current ranks of tracked applications, providing real-time insights directly in its Discord status.
 

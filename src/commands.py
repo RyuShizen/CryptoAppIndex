@@ -1,8 +1,8 @@
 #                     GNU GENERAL PUBLIC LICENSE
-#                        Version 3, 29 June 2007
-#                     SeedSnake | CryptoAppIndex
+#                               Version 3
+#                     RyuShizen | CryptoAppIndex
 
-#  Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
+#  Copyright (C) 2024 Free Software Foundation, Inc. <https://fsf.org/>
 #  Everyone is permitted to copy and distribute verbatim copies
 #  of this license document, but changing it is not allowed.
 
@@ -42,8 +42,9 @@ async def limit_command(interaction: Interaction):
 
     if user_id in last_execution_times:
         last_time = datetime.fromisoformat(last_execution_times[user_id])
+        next_time = now - last_time
         if now - last_time < timedelta(seconds=10):
-            await interaction.response.send_message("❗ Avoid spamming commands, wait 10 seconds before trying again. ❗", ephemeral=True)
+            await interaction.response.send_message(f"Wait before entering a new command, next command available: {next_time}", ephemeral=True)
             return False
 
     last_execution_times[user_id] = now.isoformat()
@@ -113,41 +114,41 @@ async def setup_commands(bot):
         await coinbase_tracker.save_rank(rank_number_coinbase)
         await interaction.response.send_message(files=[file_thumb, file_sentiment], embed=embed)
 
-    @bot.tree.command(name="cwallet", description="Get the current rank of the Coinbase Wallet app")
-    async def cwallet_command(interaction: Interaction):
-        if not await limit_command(interaction):
-            return
+    # @bot.tree.command(name="cwallet", description="Get the current rank of the Coinbase Wallet app")
+    # async def cwallet_command(interaction: Interaction):
+    #     if not await limit_command(interaction):
+    #         return
         
-        now = datetime.now()
+    #     now = datetime.now()
 
-        average_sentiment_calculation = await weighted_average_sentiment_calculation()
-        rank_number_wallet = await current_rank_wallet()
-        current_datetime_hour = now.strftime('%Y-%m-%d at %H:%M:%S')
+    #     average_sentiment_calculation = await weighted_average_sentiment_calculation()
+    #     rank_number_wallet = await current_rank_wallet()
+    #     current_datetime_hour = now.strftime('%Y-%m-%d at %H:%M:%S')
 
-        sentiment_text, sentiment_image_filename = await evaluate_sentiment()
-        change_symbol = await wallet_tracker.compare_ranks(rank_number_wallet)
-        highest_rank, lowest_rank = await ath_wallet_tracker.get_extreme_ranks()
+    #     sentiment_text, sentiment_image_filename = await evaluate_sentiment()
+    #     change_symbol = await wallet_tracker.compare_ranks(rank_number_wallet)
+    #     highest_rank, lowest_rank = await ath_wallet_tracker.get_extreme_ranks()
 
-        embed = Embed(title="Coinbase's Wallet Statistics", description="Real-time tracking and analysis of the Coinbase's Wallet app ranking.", color=0x0052ff)
-        file_thumb = File("assets/coinbase-wallet-seeklogo.png", filename="coinbase_wallet_logo.png")
-        embed.set_thumbnail(url="attachment://coinbase_wallet_logo.png")
+    #     embed = Embed(title="Coinbase's Wallet Statistics", description="Real-time tracking and analysis of the Coinbase's Wallet app ranking.", color=0x0052ff)
+    #     file_thumb = File("assets/coinbase-wallet-seeklogo.png", filename="coinbase_wallet_logo.png")
+    #     embed.set_thumbnail(url="attachment://coinbase_wallet_logo.png")
 
-        embed.add_field(name="🏆 Current Rank", value=f"#️⃣{number_to_emoji(rank_number_wallet)} ``in Finance on {current_datetime_hour}``", inline=False)
-        embed.add_field(name="🔂 Recent Positional Change", value=change_symbol, inline=False)
-        if highest_rank:
-            embed.add_field(name="📈 Peak Rank Achieved (ATH)", value=f"#️⃣{number_to_emoji(highest_rank['rank'])} ``on {highest_rank['timestamp']}``", inline=True)
-        if lowest_rank:
-            embed.add_field(name="📉 Recent Lowest Rank (ATL)", value=f"#️⃣{number_to_emoji(lowest_rank['rank'])} ``on {lowest_rank['timestamp']}``", inline=True)
+    #     embed.add_field(name="🏆 Current Rank", value=f"#️⃣{number_to_emoji(rank_number_wallet)} ``in Finance on {current_datetime_hour}``", inline=False)
+    #     embed.add_field(name="🔂 Recent Positional Change", value=change_symbol, inline=False)
+    #     if highest_rank:
+    #         embed.add_field(name="📈 Peak Rank Achieved (ATH)", value=f"#️⃣{number_to_emoji(highest_rank['rank'])} ``on {highest_rank['timestamp']}``", inline=True)
+    #     if lowest_rank:
+    #         embed.add_field(name="📉 Recent Lowest Rank (ATL)", value=f"#️⃣{number_to_emoji(lowest_rank['rank'])} ``on {lowest_rank['timestamp']}``", inline=True)
 
-        embed.add_field(name="🚥 Current Market Sentiment", value=f"Score: ``{average_sentiment_calculation}``\nFeeling: ``{sentiment_text}``", inline=False)
-        file_sentiment = File(f"assets/{sentiment_image_filename}", filename=sentiment_image_filename)
-        embed.set_image(url=f"attachment://{sentiment_image_filename}")
+    #     embed.add_field(name="🚥 Current Market Sentiment", value=f"Score: ``{average_sentiment_calculation}``\nFeeling: ``{sentiment_text}``", inline=False)
+    #     file_sentiment = File(f"assets/{sentiment_image_filename}", filename=sentiment_image_filename)
+    #     embed.set_image(url=f"attachment://{sentiment_image_filename}")
 
-        avatar_url = interaction.user.avatar.url if interaction.user.avatar else None
-        embed.set_footer(text=f"Requested by {interaction.user.display_name}, {current_datetime_hour}.", icon_url=avatar_url if avatar_url else None)
+    #     avatar_url = interaction.user.avatar.url if interaction.user.avatar else None
+    #     embed.set_footer(text=f"Requested by {interaction.user.display_name}, {current_datetime_hour}.", icon_url=avatar_url if avatar_url else None)
 
-        await wallet_tracker.save_rank(rank_number_wallet)
-        await interaction.response.send_message(files=[file_thumb, file_sentiment], embed=embed)
+    #     await wallet_tracker.save_rank(rank_number_wallet)
+    #     await interaction.response.send_message(files=[file_thumb, file_sentiment], embed=embed)
 
     @bot.tree.command(name="binance", description="Get the current rank of the Binance app")
     async def binance_command(interaction: Interaction):
@@ -670,7 +671,9 @@ async def setup_commands(bot):
 
         view = View()
         donate_button = Button(label="Donate in Bitcoin ❤", url="https://www.blockchain.com/explorer/addresses/btc/bc1qu55rjs86plmdfcrett6g8yke2tfxywqxhmluh5", style=ButtonStyle.link)
-        vote_button = Button(label="Vote for our bot 🥇 (available soon)", url="https://top.gg/", style=ButtonStyle.link)
+        vote_button = Button(label="Vote for our bot 🥇", url="https://top.gg/", style=ButtonStyle.link)
+        premium_button = Button(label="Premium ✨ (soon 🔥)", url="https://www.cryptoappindex.xyz/", style=ButtonStyle.link)
+        view.add_item(premium_button)
         view.add_item(donate_button)
         view.add_item(vote_button)
 

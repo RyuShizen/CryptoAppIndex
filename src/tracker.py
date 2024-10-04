@@ -1,8 +1,8 @@
 #                     GNU GENERAL PUBLIC LICENSE
-#                        Version 3, 29 June 2007
-#                     SeedSnake | CryptoAppIndex
+#                               Version 3
+#                     RyuShizen | CryptoAppIndex
 
-#  Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
+#  Copyright (C) 2024 Free Software Foundation, Inc. <https://fsf.org/>
 #  Everyone is permitted to copy and distribute verbatim copies
 #  of this license document, but changing it is not allowed.
 
@@ -242,7 +242,7 @@ class RankTracker:
             except Exception as e:
                 logging.error(f"Failed to check alerts: {e}")
 
-            await asyncio.sleep(10)
+            await asyncio.sleep(1000)
 
     async def check_notifications_interval(self):
         logging.info("Starting to check notifs parameters.")
@@ -290,7 +290,7 @@ class RankTracker:
             except Exception as e:
                 logging.error(f"Failed to check notifs: {e}")
 
-            await asyncio.sleep(10)
+            await asyncio.sleep(1000)
 
     async def send_alert(self, user_id, app_name, rank):
         logging.info(f"Preparing to send alert for {app_name} to user {user_id}")
@@ -325,34 +325,34 @@ class RankTracker:
         except Exception as e:
             logging.error(f"An error occurred while sending an alert to {user_id}: {e}")
 
-    async def update_bot_status(self):
-        logging.info("Starting to update bot status.")
+    # async def update_bot_status(self):
+    #     logging.info("Starting to update bot status.")
 
-        app_urls = [
-            ("coinbase", self.url_coinbase),
-            ("coinbase wallet", self.url_coinbase_wallet),
-            ("binance", self.url_binance),
-            ("crypto.com", self.url_cryptodotcom)
-        ]
-        status_index = 0
-        while True:
-            app_name, url = app_urls[status_index]
-            try:
-                rank = await self.fetch_rank(url)
-                if rank is not None:
-                    status_message = f"{app_name.capitalize()}: Rank #{rank}"
-                    await self.bot.change_presence(activity=discord.Game(name=status_message))
-                    logging.info(f"Status updated: {status_message}")
-                else:
-                    logging.warning(f"Failed to fetch rank for {app_name}")
-            except Exception as e:
-                logging.error(f"Error fetching rank for {app_name}: {e}")
+    #     app_urls = [
+    #         ("coinbase", self.url_coinbase),
+    #         ("coinbase wallet", self.url_coinbase_wallet),
+    #         ("binance", self.url_binance),
+    #         ("crypto.com", self.url_cryptodotcom)
+    #     ]
+    #     status_index = 0
+    #     while True:
+    #         app_name, url = app_urls[status_index]
+    #         try:
+    #             rank = await self.fetch_rank(url)
+    #             if rank is not None:
+    #                 status_message = f"{app_name.capitalize()}: Rank #{rank}"
+    #                 await self.bot.change_presence(activity=discord.Game(name=status_message))
+    #                 logging.info(f"Status updated: {status_message}")
+    #             else:
+    #                 logging.warning(f"Failed to fetch rank for {app_name}")
+    #         except Exception as e:
+    #             logging.error(f"Error fetching rank for {app_name}: {e}")
 
-            await asyncio.sleep(10)
+    #         await asyncio.sleep(10)
 
-            status_index = (status_index + 1) % len(app_urls)
+    #         status_index = (status_index + 1) % len(app_urls)
 
-            logging.info("Bot status update loop completed one iteration.")
+    #         logging.info("Bot status update loop completed one iteration.")
 
     async def send_notif(self, user_id, app_name, interval, hour, rank):
         logging.info(f"Preparing to send {interval} notif for {app_name} to user {user_id} at {hour}")
@@ -404,7 +404,7 @@ class RankTracker:
                     self.track_rank(),
                     self.check_alerts(),
                     self.check_notifications_interval(),
-                    self.update_bot_status()
+                    # self.update_bot_status()
                 )
             except Exception as e:
                 logging.error(f"An error occurred in the tracker loop: {e}")
