@@ -4,7 +4,8 @@
 <a href="https://imgbb.com/"><img src="https://i.ibb.co/4sLW3yM/Crypto-App-Index-Logo2.png" alt="Crypto-App-Index-Logo2" border="0"></a>
 </p>
 
-**📢 The App is no more maintained, for me info contact me on X @CryptoAppIndex**
+📢 **The app is no longer maintained.**  
+For more information, please contact me on X: [@CryptoAppIndex](https://x.com/CryptoAppIndex)
 
 CryptoAppIndex is a Discord App designed to provide real-time ranking of crypto apps on the App Store directly within your Discord server. 
 By using a simple command, users can quickly get up-to-date information about Crypto's apps popularity, live positional change, ranks data history, and market sentiment.
